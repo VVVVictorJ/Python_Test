@@ -1,3 +1,4 @@
 # Python_Test
-Daily Program For Fun  
-test
+Daily Practice for fun. 
+Try learn multiprocess development and design pattern.
+
