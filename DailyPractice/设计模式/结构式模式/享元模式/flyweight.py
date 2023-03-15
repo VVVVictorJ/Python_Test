@@ -5,10 +5,11 @@ def flyweight(cls):
     # 参数元组作为key， 类的实例作为value
     # 如果参数元组已存在，也就是实例化时提供的参数与之前某次相同
     # 则不再对类进行实例化，返回字典中对应的value，也就是类的实例
-    return (lambda *args, **kwargs: instances.setdefault(
-            (args, tuple(kwargs.items())), cls(args, kwargs)
+    return (lambda *args, **kwargs: instances.setdefault
+            (
+                (args, tuple(kwargs.items())), cls(args, kwargs)
             )
-        )
+            )
 
 
 @flyweight
@@ -32,7 +33,3 @@ print('id(instance03):', id(instance03))
 print('id(instance04):', id(instance04))
 print('type(instance01):', type(instance01))
 print('type(instance02):', type(instance02))
-print('instance01', instance01.__dict__)
-print('instance01', instance01.__dict__)
-print('instance01', instance01.__dict__)
-
