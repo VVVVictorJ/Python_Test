@@ -4,6 +4,7 @@ metaflyweight = lambda name, parents, attrs: type(
         list(attrs.items()) +
         [('__instances', dict()),
          ('__new__',
+          # cls.__instances.setdefault存储键值对，所以不同参数创建不同的对象
           classmethod(lambda cls, *args, **kwargs: cls.__instances.setdefault(
               (args, tuple(kwargs.items())),
               super(type(cls), cls).__new__(cls))))]))
