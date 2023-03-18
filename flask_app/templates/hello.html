@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+
+
+<title>Hello From Flask</title>
+
+
+{% if name %}
+<!-- 如果 name 不为空则将name 渲染出来 -->
+<h1>Hello {{ name }}!</h1>
+{% else %}
+<!-- 如果 name 为空则打印 Hello World！-->
+<h1>Hello World!</h1>
+{% endif %}
+
