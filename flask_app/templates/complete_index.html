@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<title>Index</title>
+<div>
+  {% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+  {% endfor %}
+  <h1>hello {{name}}</h1>
+</div>
