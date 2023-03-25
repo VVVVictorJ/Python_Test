@@ -34,7 +34,7 @@ def test():
     print(url_for('show_post', post_id=2, _anchor='a'))
     return 'test'
 
-@app.route('/test2')
-def test2():
-    print('xxxx.simplelab.cn/courses/java')
-    return redirect('/',301)
+@app.route('/test')
+def test():
+    print('xxx.simplelab.cn/courses/java')
+    return redirect('/', 301)

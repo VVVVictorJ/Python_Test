@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from 'marco.html' import course_item  %}
+
+{% block header %}
+	<h1>header</h1>
+{% endblock %}
+
+{% block content %}
+	<p>{{course.teacher.email | hidden_email()}}</p>
+	<p> {{course.tags|length}}</p>
+	<p>{{ course_item(course) }}</p>
+{% endblock %}

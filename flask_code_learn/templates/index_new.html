@@ -1,0 +1,32 @@
+<p>python: {{course.python}}</p>
+<p>java: {{course.java}}</p>
+<p>bigdata: {{course.bigdata}}</p>
+<p>teacher: {{course.teacher}}</p>
+<p>is_unique: {{course.is_unique}}</p>
+<p>has_tag: {{course.has_tag}}</p>
+<p>tags: {{course.tags}}</p>
+{% if course.is_private %}
+	<p> course {{course.name}} is private</p>
+{% elif course.is_member_course %}
+	<p> course {{course.name}} is member course</p>
+{% else %}
+	<p> course {{course.name}} is normal course</p>
+{% endif %}
+{% for tag in course.tags %}
+	<span>{{ tag }}</span>
+{% endfor %}
+
+{% macro course_item(course, type="bootstrap")  %}
+	<div>
+		<p> type: {{type}}</p>
+		<p> name: {{course.name}}</p>
+		<p> user_count: {{course.user_count}} </p>
+		<p> teacher: {{course.teacher}} </p>
+		<p> is_private: {{course.is_private}}</p>
+	</div>
+{% endmacro %}
+
+<div> {{course_item(course)}} </div>
+<p>{{'='*20}}</p>
+<div>{{course_item(course, type="louplus")}}</div>
+
