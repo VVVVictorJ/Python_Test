@@ -1,0 +1,8 @@
+rename.py
+*.txt
+*.jpeg
+*.png
+*.docx
+*.doc
+lxml_test.py
+test.py
