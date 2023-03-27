@@ -35,9 +35,26 @@ class AnalysisDocx:
             table = file.tables[0]
             cells = table._cells
             cells_string = [cell.text for cell in cells]
-            cells_value = sorted(set(cells_string), key=cells_string.index)
+            # print(len(cells_string))
+            # for k, v in enumerate(cells_string):
+            #     print(k, v.replace('\n', ' ').replace(' ', ''))
+            cells_value = []
+            cnt = 0
+            for ele in cells_string:
+                if (len(cells_value) == 0):
+                    cells_value.append(ele)
+                else:
+                    # if ele == '无':
+                    #     cnt += 1
+                    if (cells_value[-1] != ele):
+                        cells_value.append(ele)
+                    # elif cells_value[-1] == '无' and cnt == 7:
+                    #     cells_value.append(ele)
+            # print(len(cells_value))
+            # cells_value = sorted(set(cells_string), key=cells_string.index)
+            # print(len(cells_value))
             for k, v in enumerate(cells_value):
-                print(k, v)
+                print(k, v.replace('\n', ' '))
         except:
             pass
 
@@ -47,61 +64,81 @@ class AnalysisDocx:
             table = file.tables[0]
             cells = table._cells
             cells_string = [cell.text for cell in cells]
-            cells_value = sorted(set(cells_string), key=cells_string.index)
-
+            # cells_value = sorted(set(cells_string), key=cells_string.index)
+            cells_value = []
+            for ele in cells_string:
+                if (len(cells_value) == 0):
+                    cells_value.append(ele)
+                else:
+                    if (cells_value[-1] != ele):
+                        cells_value.append(ele)
+            # 故障系统
             self.genData(cells_value[0], cells_value[3])
+            # 故障名称
             self.genData(cells_value[1], cells_value[4])
+            # 签收日期
             self.genData(cells_value[2], cells_value[5])
+            # 故障日期
             self.genData(cells_value[6], cells_value[10])
+            # 处理起止日期和时间 去除换行
             self.genData(cells_value[7], cells_value[11].replace('\n', ' '))
+            # 填表人
             self.genData(cells_value[8], cells_value[12])
+            # 负责人
             self.genData(cells_value[9], cells_value[13])
-            self.genData(cells_value[14], cells_value[17])
-            self.genData(cells_value[15], cells_value[18])
-            self.genData(cells_value[16], cells_value[11].replace('\n', ' '))
-            self.genData(cells_value[15], cells_value[18])
-
-            def LocateDuringTime(para: str, l:list):
-                cnt = 0
-                for i in l:
-                    if para in i:
-                        cnt+=1
-                    if cnt == 2:
-                        return l.index(i)
-            q = lambda x,y: LocateDuringTime(x, y)
-
-            self.genData('历时2', cells_value[q('分钟', cells_value)])
-
-            def Locate(para: str, l: list):
-                for i in l:
-                    if para in i:
-                        return l.index(i)
-
-            y = lambda x, y: Locate(x, y)
-            # TODO 现象、排障经过、原因分析 故   障   说   明去除空格
-            self.genData(
-                cells_value[y('现象、排障经过、原因分析',
-                              cells_value)].replace('\n',
-                                                    ',').replace(' ', ''),
-                cells_value[22][6:])
-
-            def isR(l: list):
-                for i in l:
-                    if '√' in i:
-                        return i
-
-            x = lambda x: isR(cells_value)
-
-            self.genData(cells_value[y('消耗备件', cells_value)][0:4],
-                         cells_value[y('消耗备件', cells_value)][-1])
-            self.genData(cells_value[cells_value.index('责任')],
-                         x(cells_value)[-4:])
-            self.genData(
+            # 主机系统停机时间
+            self.genData(cells_value[14], cells_value[18])
+            # [19] 存在年月 
+            if('月' in cells_value[19]):
+                # 历时
+                self.genData('历时一', cells_value[18])
+                # 影响业务时间
+                self.genData(cells_value[16], cells_value[19].replace('\n', ' '))
+                # 历时
+                self.genData('历时二', cells_value[20])
+                #现象、排障经过、原因分析 故障说明
+                self.genData(cells_value[21].replace('\n', '、').replace(' ',''), cells_value[22].replace('\n', ' '))
+                # 消耗备件
+                self.genData(cells_value[23][0:4], cells_value[23][-1])   
+                # 故障处理人
+                self.genData(cells_value[24][0:5], cells_value[24][6:])     
+                def isR(l: list):
+                    for i in l:
+                        if '√' in i:
+                            return i
+                x = lambda x: isR(cells_value)     
+                self.genData(cells_value[cells_value.index('责任')],
+                x(cells_value)[-4:])   
+                self.genData(
+                cells_value[cells_value.index('纠正和预防措施')],
+                cells_value[cells_value.index('纠正和预防措施') + 1].replace(
+                    '\n', ' '))
+            else:
+                # 历时
+                self.genData('历时一', cells_value[19])
+                # 影响业务时间
+                self.genData(cells_value[16], cells_value[20].replace('\n', ' '))
+                # 历时
+                self.genData('历时二', cells_value[21])
+                #现象、排障经过、原因分析 故障说明
+                self.genData(cells_value[22].replace('\n', '、').replace(' ',''), cells_value[23].replace('\n', ' '))
+                # 消耗备件
+                self.genData(cells_value[24][0:4], cells_value[24][-1])   
+                # 故障处理人
+                self.genData(cells_value[25][0:5], cells_value[25][6:])     
+                def isR(l: list):
+                    for i in l:
+                        if '√' in i:
+                            return i
+                x = lambda x: isR(cells_value)     
+                self.genData(cells_value[cells_value.index('责任')],
+                x(cells_value)[-4:])   
+                self.genData(
                 cells_value[cells_value.index('纠正和预防措施')],
                 cells_value[cells_value.index('纠正和预防措施') + 1].replace(
                     '\n', ' '))
         except:
-            pass
+            print('出错')
         try:
             txtFileName = "{}/{}{}".format(self.resultpath, self.uuidStr,
                                            '.txt')
@@ -140,7 +177,7 @@ class AnalysisDocx:
                         f.write(rel.target_part.blob)
                         self.genImageRocord(f'{self.resultpath}/{img_name}')
         except:
-            pass
+            print('写图片出错')
 
     def showData(self):
         for k, v in self.docxWordInfo.items():
@@ -152,19 +189,17 @@ class AnalysisDocx:
 
 
 if __name__ == '__main__':
-    obj = AnalysisDocx(
-        filepath=
-        f"E:\\code\\Python\\shitwork\\src\\251B_20220310_湛江钢铁_数据仓库系统_故障报告书_B.docx"
-    )
+    obj = AnalysisDocx(filepath=f"a.docx")
     # 有待封装，将其封装成一个类Producer
     # obj.genDocxTableInfo2TxtTest()
-    obj.genDocxTableInfo2Txt()
-    obj.showData()
-    # try:
-    #     obj.genDocxImage()
-    #     obj.genDocxTableInfo2Txt()
-    #     obj.showData()
-    # except:
-    #     pass
-    # finally:
-    #     obj.record.addList(obj.resultpath)
+    # obj.genDocxTableInfo2Txt()
+    # obj.showData()
+    try:
+        # obj.genDocxTableInfo2TxtTest()
+        obj.genDocxImage()
+        obj.genDocxTableInfo2Txt()
+        # obj.showData()
+    except:
+        pass
+    finally:
+        obj.record.addList(obj.resultpath)
