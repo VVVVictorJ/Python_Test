@@ -72,10 +72,12 @@ class AnalysisDocx:
                 else:
                     if (cells_value[-1] != ele):
                         cells_value.append(ele)
+
             def isR(l: list):
                 for i in l:
                     if '√' in i:
                         return i
+
             # 故障系统
             self.genData(cells_value[0], cells_value[3])
             # 故障名称
@@ -92,47 +94,53 @@ class AnalysisDocx:
             self.genData(cells_value[9], cells_value[13])
             # 主机系统停机时间
             self.genData(cells_value[14], cells_value[18])
-            # [19] 存在年月 
-            if('月' in cells_value[19]):
+            # [19] 存在年月
+            if ('月' in cells_value[19]):
                 # 历时
                 self.genData('历时一', cells_value[18])
                 # 影响业务时间
-                self.genData(cells_value[16], cells_value[19].replace('\n', ' '))
+                self.genData(cells_value[16],
+                             cells_value[19].replace('\n', ' '))
                 # 历时
                 self.genData('历时二', cells_value[20])
                 #现象、排障经过、原因分析 故障说明
-                self.genData(cells_value[21].replace('\n', '、').replace(' ',''), cells_value[22].replace('\n', ' '))
-                # 消耗备件
-                self.genData(cells_value[23][0:4], cells_value[23][-1])   
-                # 故障处理人
-                self.genData(cells_value[24][0:5], cells_value[24][6:])     
-                x = lambda x: isR(cells_value)     
-                self.genData(cells_value[cells_value.index('责任')],
-                x(cells_value)[-4:])   
                 self.genData(
-                cells_value[cells_value.index('纠正和预防措施')],
-                cells_value[cells_value.index('纠正和预防措施') + 1].replace(
-                    '\n', ' '))
+                    cells_value[21].replace('\n', '、').replace(' ', ''),
+                    cells_value[22].replace('\n', ' '))
+                # 消耗备件
+                self.genData(cells_value[23][0:4], cells_value[23][-1])
+                # 故障处理人
+                self.genData(cells_value[24][0:5], cells_value[24][6:])
+                x = lambda x: isR(cells_value)
+                self.genData(cells_value[cells_value.index('责任')],
+                             x(cells_value)[-4:])
+                self.genData(
+                    cells_value[cells_value.index('纠正和预防措施')],
+                    cells_value[cells_value.index('纠正和预防措施') + 1].replace(
+                        '\n', ' '))
             else:
                 # 历时
                 self.genData('历时一', cells_value[19])
                 # 影响业务时间
-                self.genData(cells_value[16], cells_value[20].replace('\n', ' '))
+                self.genData(cells_value[16],
+                             cells_value[20].replace('\n', ' '))
                 # 历时
                 self.genData('历时二', cells_value[21])
                 #现象、排障经过、原因分析 故障说明
-                self.genData(cells_value[22].replace('\n', '、').replace(' ',''), cells_value[23].replace('\n', ' '))
-                # 消耗备件
-                self.genData(cells_value[24][0:4], cells_value[24][-1])   
-                # 故障处理人
-                self.genData(cells_value[25][0:5], cells_value[25][6:])     
-                x = lambda x: isR(cells_value)     
-                self.genData(cells_value[cells_value.index('责任')],
-                x(cells_value)[-4:])   
                 self.genData(
-                cells_value[cells_value.index('纠正和预防措施')],
-                cells_value[cells_value.index('纠正和预防措施') + 1].replace(
-                    '\n', ' '))
+                    cells_value[22].replace('\n', '、').replace(' ', ''),
+                    cells_value[23].replace('\n', ' '))
+                # 消耗备件
+                self.genData(cells_value[24][0:4], cells_value[24][-1])
+                # 故障处理人
+                self.genData(cells_value[25][0:5], cells_value[25][6:])
+                x = lambda x: isR(cells_value)
+                self.genData(cells_value[cells_value.index('责任')],
+                             x(cells_value)[-4:])
+                self.genData(
+                    cells_value[cells_value.index('纠正和预防措施')],
+                    cells_value[cells_value.index('纠正和预防措施') + 1].replace(
+                        '\n', ' '))
         except:
             print('出错')
         try:
