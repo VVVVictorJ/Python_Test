@@ -72,6 +72,10 @@ class AnalysisDocx:
                 else:
                     if (cells_value[-1] != ele):
                         cells_value.append(ele)
+            def isR(l: list):
+                for i in l:
+                    if '√' in i:
+                        return i
             # 故障系统
             self.genData(cells_value[0], cells_value[3])
             # 故障名称
@@ -102,10 +106,6 @@ class AnalysisDocx:
                 self.genData(cells_value[23][0:4], cells_value[23][-1])   
                 # 故障处理人
                 self.genData(cells_value[24][0:5], cells_value[24][6:])     
-                def isR(l: list):
-                    for i in l:
-                        if '√' in i:
-                            return i
                 x = lambda x: isR(cells_value)     
                 self.genData(cells_value[cells_value.index('责任')],
                 x(cells_value)[-4:])   
@@ -126,10 +126,6 @@ class AnalysisDocx:
                 self.genData(cells_value[24][0:4], cells_value[24][-1])   
                 # 故障处理人
                 self.genData(cells_value[25][0:5], cells_value[25][6:])     
-                def isR(l: list):
-                    for i in l:
-                        if '√' in i:
-                            return i
                 x = lambda x: isR(cells_value)     
                 self.genData(cells_value[cells_value.index('责任')],
                 x(cells_value)[-4:])   
