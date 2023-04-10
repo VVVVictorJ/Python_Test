@@ -2,6 +2,7 @@ import os
 import re
 import uuid
 import zipfile
+import pandas as pd
 
 from docx import Document
 from lxml import etree
@@ -24,7 +25,7 @@ class AnalysisDocx:
         self.record = RecordDirList()
 
     def genData(self, k, v):
-        self.docxWordInfo[k] = v
+        self.docxWordInfo[k] = [v]
 
     def genImageRocord(self, val):
         self.docxImage.append(val)
@@ -144,18 +145,25 @@ class AnalysisDocx:
         except:
             print('出错')
         try:
-            txtFileName = "{}/{}{}".format(self.resultpath, self.uuidStr,
-                                           '.txt')
-            with open(txtFileName, "wb") as f:
-                for k, v in self.docxWordInfo.items():
-                    f.write("{0:{1}<10}\t{1:^10}@{2}\t{3:^10}\n".format(
-                        k, chr(12288), v, chr(12288)).encode())
+            df = pd.DataFrame(self.docxWordInfo)
+            print(df)
+            df.to_csv('test.csv')
         except FileNotFoundError:
-            print('无法打开指定的文件!')
-        except LookupError:
-            print('指定了未知的编码!')
-        except UnicodeDecodeError:
-            print('读取文件时解码错误!')
+            print('无法打开指定的文件！')
+#        try:
+#            txtFileName = "{}/{}{}".format(self.resultpath, self.uuidStr,
+#                                           '.txt')
+#            with open(txtFileName, "wb") as f:
+#                for k, v in self.docxWordInfo.items():
+#                    f.write("{0:{1}<10}\t{1:^10}@{2}\t{3:^10}\n".format(
+#                        k, chr(12288), v, chr(12288)).encode())
+#        except FileNotFoundError:
+#            print('无法打开指定的文件!')
+#        except LookupError:
+#            print('指定了未知的编码!')
+#        except UnicodeDecodeError:
+#            print('读取文件时解码错误!')
+
 
     def genDocxImage(self):
         self.uuidStr = str(uuid.uuid4())
