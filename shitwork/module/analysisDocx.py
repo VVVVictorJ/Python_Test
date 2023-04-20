@@ -1,9 +1,10 @@
 import os
+import platform
 import re
 import uuid
 import zipfile
-import pandas as pd
 
+import pandas as pd
 from docx import Document
 from lxml import etree
 from recordFileList import RecordDirList
@@ -23,6 +24,7 @@ class AnalysisDocx:
         self.docxWordInfo = {}
         self.docxImage = []
         self.record = RecordDirList()
+        self.runingPlatform = platform.system().lower() 
 
     def genData(self, k, v):
         self.docxWordInfo[k] = [v]
@@ -58,6 +60,18 @@ class AnalysisDocx:
                 print(k, v.replace('\n', ' '))
         except:
             pass
+
+    def writeToFile(self, source, dest, filename:str):
+        destinationPath = os.path.sep.join([dest, filename])
+        try:
+            with open(f'{destinationPath}', "wb") as f:
+                f.write(source)
+        except FileNotFoundError:
+            print('无法打开指定的文件!')
+        except LookupError:
+            print('指定了未知的编码!')
+        except UnicodeDecodeError:
+            print('读取文件时解码错误!')
 
     def genDocxTableInfo2Txt(self):
         try:
@@ -147,7 +161,7 @@ class AnalysisDocx:
         try:
             df = pd.DataFrame(self.docxWordInfo)
             print(df)
-            df.to_csv('test.csv')
+            df.to_csv(f'{self.uuidStr}.csv')
         except FileNotFoundError:
             print('无法打开指定的文件！')
 #        try:
@@ -185,9 +199,10 @@ class AnalysisDocx:
                     img_name = "{}-{}{}".format(f'{new_name}',
                                                 str(uuid.uuid4()),
                                                 os.path.splitext(img_name)[-1])
-                    with open(f'{self.resultpath}/{img_name}', "wb") as f:
-                        f.write(rel.target_part.blob)
-                        self.genImageRocord(f'{self.resultpath}/{img_name}')
+                    self.writeToFile(rel.target_part.blob, self.resultpath, img_name)
+                    # with open(f'{self.resultpath}/{img_name}', "wb") as f:
+                    #     f.write(rel.target_part.blob)
+                    #     self.genImageRocord(f'{self.resultpath}/{img_name}')
         except:
             print('写图片出错')
 
@@ -201,17 +216,18 @@ class AnalysisDocx:
 
 
 if __name__ == '__main__':
-    obj = AnalysisDocx(filepath=f"a.docx")
+    obj = AnalysisDocx(filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx")
     # 有待封装，将其封装成一个类Producer
     # obj.genDocxTableInfo2TxtTest()
     # obj.genDocxTableInfo2Txt()
     # obj.showData()
     try:
-        # obj.genDocxTableInfo2TxtTest()
+    #     # obj.genDocxTableInfo2TxtTest()
         obj.genDocxImage()
         obj.genDocxTableInfo2Txt()
-        # obj.showData()
+    #     # obj.showData()
     except:
         pass
-    finally:
-        obj.record.addList(obj.resultpath)
+    # finally:
+    #     obj.record.addList(obj.resultpath)
+    # AnalysisDocx.IsLinuxOrWindows()
