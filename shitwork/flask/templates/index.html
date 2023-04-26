@@ -1,0 +1,79 @@
+<head>
+    <title>
+        datatables测试
+    </title>
+    <!--引入css-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    
+    <!--引入JavaScript-->
+    <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <h1>
+        Hello World!
+    </h1>
+    <button id="table_id_example_button">获取选中的行</button>
+    <button id="123">测试</button>
+    <table id="table_id_example" class="display">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+        $(document).ready( function () {
+        var table = $('#table_id_example').DataTable({
+             //这样配置后，即可用DT的API来访问表格数据
+            columns: [
+                {data: "hello"},
+                {data: "column2"}
+            ]
+        });
+        //给行绑定选中事件
+         $('#table_id_example tbody').on( 'click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+        //给按钮绑定点击事件
+        $("#table_id_example_button").click(function () {
+            var column1 = table.row('.selected').data().column1;
+            var column2 = table.row('.selected').data().column2;
+            alert("第一列内容："+column1 + "；第二列内容： " + column2);
+        });
+    } );
+
+    $("#123").click(function (){
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:5000/getData",
+            contentType: "application/json;charset=utf-8",
+            data:"{\"id\":\"a\"}",
+            dataType: "json",
+            success:function (message) {
+                alert("提交成功"+JSON.stringify(message));
+            },
+            error:function (message) {
+                alert("提交失败"+JSON.stringify(message));
+            }
+        });
+    });
+</script>
