@@ -1,35 +1,68 @@
 import os
 import platform
 import re
+import sys
 import uuid
 import zipfile
 
 import pandas as pd
 from docx import Document
 from lxml import etree
+from processDocx import ProcessDocx
 from recordFileList import RecordDirList
 
 
-#TODO 将其实现成单例
+# TODO 将其实现成单例
+# 文件生成路径有待优化 Done
+# 将处理文件信息的代码重构独立至模块 Done
+# 将处理图片模块的代码重构独立至模块 Done
 class AnalysisDocx:
-
     def __init__(self, filepath: str):
+        """初始化函数
+
+        Args:
+            filepath (str): 待解析文件路径
+
+        Raises:
+            TypeError: 文件路径不存在
+            TypeError: 非docx文件
+        """
         if not os.path.isfile(filepath):
             raise TypeError("NOT FILEPATH")
-        if not filepath.endswith('.docx'):
+        if not filepath.endswith(".docx"):
             raise TypeError("NOT DOCX FILE")
         self.filepath = filepath
         self.uuidStr = str(uuid.uuid4())
         self.resultpath = ""
         self.docxWordInfo = {}
+        self.docxImageDict = {}
         self.docxImage = []
         self.record = RecordDirList()
-        self.runingPlatform = platform.system().lower() 
+        self.runingPlatform = platform.system().lower()
 
-    def genData(self, k, v):
-        self.docxWordInfo[k] = [v]
+    def genResultPath(self, suffix: str = ""):
+        """生成结果路径
+
+        Args:
+            suffix (str, optional): 文件尾缀,默认可为空. Defaults to ''.
+
+        Returns:
+            _type_: str
+        """
+        if suffix == "":
+            return os.path.join(sys.path[0], "src", "images", str(uuid.uuid4()))
+        else:
+            a = []
+            a.append(os.path.join(sys.path[0], "src", "resources", str(uuid.uuid4())))
+            a.append(suffix)
+            return ".".join(a)
 
     def genImageRocord(self, val):
+        """存储图片地址至列表
+
+        Args:
+            val (str): 图片地址
+        """
         self.docxImage.append(val)
 
     def genDocxTableInfo2TxtTest(self):
@@ -44,12 +77,12 @@ class AnalysisDocx:
             cells_value = []
             cnt = 0
             for ele in cells_string:
-                if (len(cells_value) == 0):
+                if len(cells_value) == 0:
                     cells_value.append(ele)
                 else:
                     # if ele == '无':
                     #     cnt += 1
-                    if (cells_value[-1] != ele):
+                    if cells_value[-1] != ele:
                         cells_value.append(ele)
                     # elif cells_value[-1] == '无' and cnt == 7:
                     #     cells_value.append(ele)
@@ -57,177 +90,89 @@ class AnalysisDocx:
             # cells_value = sorted(set(cells_string), key=cells_string.index)
             # print(len(cells_value))
             for k, v in enumerate(cells_value):
-                print(k, v.replace('\n', ' '))
+                print(k, v.replace("\n", " "))
         except:
             pass
 
-    def writeToFile(self, source, dest, filename:str):
+    def writeToFile(self, source, dest, filename: str):
+        """写入文件至指定位置
+
+        Args:
+            source (binary): 源文件
+            dest (str): 目标地址
+            filename (str): 文件名
+        """
         destinationPath = os.path.sep.join([dest, filename])
         try:
-            with open(f'{destinationPath}', "wb") as f:
+            with open(f"{destinationPath}", "wb") as f:
                 f.write(source)
         except FileNotFoundError:
-            print('无法打开指定的文件!')
+            print("无法打开指定的文件!")
         except LookupError:
-            print('指定了未知的编码!')
+            print("指定了未知的编码!")
         except UnicodeDecodeError:
-            print('读取文件时解码错误!')
+            print("读取文件时解码错误!")
 
-    def genDocxTableInfo2Txt(self):
+    def genDocxTableInfoToCsv(self):
+        """将docx文件数据转换为csv"""
         try:
-            file = Document(self.filepath)
-            table = file.tables[0]
-            cells = table._cells
-            cells_string = [cell.text for cell in cells]
-            # cells_value = sorted(set(cells_string), key=cells_string.index)
-            cells_value = []
-            for ele in cells_string:
-                if (len(cells_value) == 0):
-                    cells_value.append(ele)
-                else:
-                    if (cells_value[-1] != ele):
-                        cells_value.append(ele)
-
-            def isR(l: list):
-                for i in l:
-                    if '√' in i:
-                        return i
-
-            # 故障系统
-            self.genData(cells_value[0], cells_value[3])
-            # 故障名称
-            self.genData(cells_value[1], cells_value[4])
-            # 签收日期
-            self.genData(cells_value[2], cells_value[5])
-            # 故障日期
-            self.genData(cells_value[6], cells_value[10])
-            # 处理起止日期和时间 去除换行
-            self.genData(cells_value[7], cells_value[11].replace('\n', ' '))
-            # 填表人
-            self.genData(cells_value[8], cells_value[12])
-            # 负责人
-            self.genData(cells_value[9], cells_value[13])
-            # 主机系统停机时间
-            self.genData(cells_value[14], cells_value[18])
-            # [19] 存在年月
-            if ('月' in cells_value[19]):
-                # 历时
-                self.genData('历时一', cells_value[18])
-                # 影响业务时间
-                self.genData(cells_value[16],
-                             cells_value[19].replace('\n', ' '))
-                # 历时
-                self.genData('历时二', cells_value[20])
-                #现象、排障经过、原因分析 故障说明
-                self.genData(
-                    cells_value[21].replace('\n', '、').replace(' ', ''),
-                    cells_value[22].replace('\n', ' '))
-                # 消耗备件
-                self.genData(cells_value[23][0:4], cells_value[23][-1])
-                # 故障处理人
-                self.genData(cells_value[24][0:5], cells_value[24][6:])
-                x = lambda x: isR(cells_value)
-                self.genData(cells_value[cells_value.index('责任')],
-                             x(cells_value)[-4:])
-                self.genData(
-                    cells_value[cells_value.index('纠正和预防措施')],
-                    cells_value[cells_value.index('纠正和预防措施') + 1].replace(
-                        '\n', ' '))
-            else:
-                # 历时
-                self.genData('历时一', cells_value[19])
-                # 影响业务时间
-                self.genData(cells_value[16],
-                             cells_value[20].replace('\n', ' '))
-                # 历时
-                self.genData('历时二', cells_value[21])
-                #现象、排障经过、原因分析 故障说明
-                self.genData(
-                    cells_value[22].replace('\n', '、').replace(' ', ''),
-                    cells_value[23].replace('\n', ' '))
-                # 消耗备件
-                self.genData(cells_value[24][0:4], cells_value[24][-1])
-                # 故障处理人
-                self.genData(cells_value[25][0:5], cells_value[25][6:])
-                x = lambda x: isR(cells_value)
-                self.genData(cells_value[cells_value.index('责任')],
-                             x(cells_value)[-4:])
-                self.genData(
-                    cells_value[cells_value.index('纠正和预防措施')],
-                    cells_value[cells_value.index('纠正和预防措施') + 1].replace(
-                        '\n', ' '))
+            obj = ProcessDocx()
+            self.docxWordInfo = obj.processDocxTableInfo(self.filepath)
         except:
-            print('出错')
+            print("ProcessDocx 出错")
+
         try:
             df = pd.DataFrame(self.docxWordInfo)
-            print(df)
-            df.to_csv(f'{self.uuidStr}.csv')
+            df.to_csv(self.genResultPath(".csv"))
         except FileNotFoundError:
-            print('无法打开指定的文件！')
-#        try:
-#            txtFileName = "{}/{}{}".format(self.resultpath, self.uuidStr,
-#                                           '.txt')
-#            with open(txtFileName, "wb") as f:
-#                for k, v in self.docxWordInfo.items():
-#                    f.write("{0:{1}<10}\t{1:^10}@{2}\t{3:^10}\n".format(
-#                        k, chr(12288), v, chr(12288)).encode())
-#        except FileNotFoundError:
-#            print('无法打开指定的文件!')
-#        except LookupError:
-#            print('指定了未知的编码!')
-#        except UnicodeDecodeError:
-#            print('读取文件时解码错误!')
-
+            print("无法打开指定的文件！")
 
     def genDocxImage(self):
-        self.uuidStr = str(uuid.uuid4())
-        self.resultpath = os.path.join(os.getcwd(), self.uuidStr)
+        """获取docx的图片"""
         try:
-            doc = Document(self.filepath)
-            dict_rel = doc.part._rels
-            for rel in dict_rel:
-                rel = dict_rel[rel]
-                if "image" in rel.target_ref:
-                    if not os.path.exists(self.resultpath):
-                        os.makedirs(self.resultpath)
-                    img_name = re.findall("/(.*)", rel.target_ref)[0]
-                    word_name = os.path.splitext(self.filepath)[0]
-                    if os.sep in word_name:
-                        new_name = word_name.split('\\')[-1]
-                    else:
-                        new_name = word_name.split('/')[-1]
-                    img_name = "{}-{}{}".format(f'{new_name}',
-                                                str(uuid.uuid4()),
-                                                os.path.splitext(img_name)[-1])
-                    self.writeToFile(rel.target_part.blob, self.resultpath, img_name)
-                    # with open(f'{self.resultpath}/{img_name}', "wb") as f:
-                    #     f.write(rel.target_part.blob)
-                    #     self.genImageRocord(f'{self.resultpath}/{img_name}')
+            # 写入指定目录
+            self.docxImageDict = ProcessDocx.processDocxImageInfo(self.filepath)
+            if len(self.docxImageDict) == 0:
+                print("此Docx无图片!")
+            else:
+                self.resultpath = self.genResultPath()
+                if not os.path.exists(self.resultpath):
+                    os.makedirs(self.resultpath)
+                for k,v in enumerate(self.docxImageDict):
+                    self.writeToFile(self.docxImageDict[v], self.resultpath, v)
         except:
-            print('写图片出错')
+            print("写入图片出错")
+        finally:
+            print("提取Docx图片, 已处理完。")
 
     def showData(self):
+        """展示数据, 针对中文字符对齐优化"""
         for k, v in self.docxWordInfo.items():
-            print("{0:{1}<10}\t{1:^10}".format(k, chr(12288)),
-                  "{0}\t{1:^10}".format(v, chr(12288)))
+            print(
+                "{0:{1}<10}\t{1:^10}".format(k, chr(12288)),
+                "{0}\t{1:^10}".format(v, chr(12288)),
+            )
         for k, v in enumerate(self.docxImage):
-            print("{0:{1}<2}\t{1:^3}".format(k, chr(12288)),
-                  "{0}\t{1:^10}".format(v, chr(12288)))
+            print(
+                "{0:{1}<2}\t{1:^3}".format(k, chr(12288)),
+                "{0}\t{1:^10}".format(v, chr(12288)),
+            )
 
 
-if __name__ == '__main__':
-    obj = AnalysisDocx(filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx")
-    # 有待封装，将其封装成一个类Producer
-    # obj.genDocxTableInfo2TxtTest()
-    # obj.genDocxTableInfo2Txt()
-    # obj.showData()
+if __name__ == "__main__":
+    # obj = AnalysisDocx(
+    #     filepath=f"E:\\code\\Python\\shitwork\\src\\251B_20220228_湛江钢铁_厚板L3系统_故障报告书_B.docx"
+    # )
+
+    obj = AnalysisDocx(
+        filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+    )
     try:
-    #     # obj.genDocxTableInfo2TxtTest()
         obj.genDocxImage()
-        obj.genDocxTableInfo2Txt()
-    #     # obj.showData()
-    except:
-        pass
-    # finally:
-    #     obj.record.addList(obj.resultpath)
-    # AnalysisDocx.IsLinuxOrWindows()
+        obj.genDocxTableInfoToCsv()
+    except FileNotFoundError:
+        print("无法打开指定的文件!")
+    except LookupError:
+        print("指定了未知的编码!")
+    except UnicodeDecodeError:
+        print("读取文件时解码错误!")
