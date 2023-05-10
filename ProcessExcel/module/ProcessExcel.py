@@ -33,7 +33,6 @@ class ProcessExcel:
     def GetData(self) -> dict:
         return self.DataSet
 
-    
     def PackToDict(self) -> dict:
         """按行读取生成字典
 
@@ -78,7 +77,7 @@ class ProcessExcel:
 
         Returns:
             int: 返回字典的Key的个数, 即当前Excel的列数
-        """ 
+        """
         return len(param.keys())
 
     # 返回行数
@@ -95,5 +94,5 @@ if __name__ == "__main__":
     print("Index is : {}".format(obj.GetKeySet()))
     print("Excel has {} rows".format(obj.GetRowsCount()))
     print("Excel has {} columns(index)".format(obj.GetColumnsCount()))
-    tmp = AutoFormatSqlGenarator("select {},{},{},{},{} from test")
+    tmp = AutoFormatSqlGenarator("select {0[0]},{0[1]},{0[2]},{0[3]},{0[4]} from test")
     tmp.GenFormatString(obj.PackToDict())

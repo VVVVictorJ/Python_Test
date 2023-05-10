@@ -7,7 +7,7 @@ class AutoFormatSqlGenarator:
 
     def GenFormatString(self, param: dict) -> str:
         for k, v in param.items():
-            print(self.FormatTemplateStr.format(v[0], v[1], v[2], v[3], v[4]))
+            print(self.FormatTemplateStr.format(v))
         return
 
     @staticmethod
@@ -15,13 +15,13 @@ class AutoFormatSqlGenarator:
         exec('print("Hello")')
 
 
-if __name__ == "__main__":
-    AutoFormatSqlGenarator.Test()
+# if __name__ == "__main__":
+#     AutoFormatSqlGenarator.Test()
     # table = {"Sjoerd": 4127, "Jack": 4098, "Dcab": 8637678}
     # print(
     #     "Jack: {0[Jack]:d}; Sjoerd: {0[Sjoerd]:d}; " "Dcab: {0[Dcab]:d}".format(table)
     # )
-    # tmp = {1: "123"}
+    # tmp = {1: "123", 2:"456"}
     # print(
-    #     "a:{0[1]}".format(tmp)
+    #     "a:{0[1]}, b:{0[2]}".format(tmp)
     # )
