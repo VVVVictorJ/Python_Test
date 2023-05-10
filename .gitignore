@@ -3,3 +3,5 @@
 record.txt
 .gitignore
 *.csv
+*.ps1
+*.xlsx
