@@ -5,3 +5,7 @@ record.txt
 *.csv
 *.ps1
 *.xlsx
+*.docx
+*.yarn*
+*.lock
+.gitignore
