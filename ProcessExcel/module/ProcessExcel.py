@@ -1,7 +1,6 @@
 import logging
 
 import pandas as pd
-import xlrd
 from FormatString import AutoFormatSqlGenarator
 
 
