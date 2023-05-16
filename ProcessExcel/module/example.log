@@ -1,0 +1,76 @@
+DEBUG:root:Function __init__ is running.
+DEBUG:root:Function getTitle is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function getTitle is finising.
+
+DEBUG:root:Function getDataFromTitle is running.
+DEBUG:root:Using Time: 0.003989696502685547s
+DEBUG:root:Function getDataFromTitle is finising.
+
+DEBUG:root:Using Time: 0.6725912094116211s
+DEBUG:root:Function __init__ is finising.
+
+DEBUG:root:Function GetKeySet is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetKeySet is finising.
+
+DEBUG:root:Function GetRowsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetRowsCount is finising.
+
+DEBUG:root:Function GetColumnsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetColumnsCount is finising.
+
+DEBUG:root:Function PackToDict is running.
+DEBUG:root:Function GetRowsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetRowsCount is finising.
+
+DEBUG:root:Function GetRowsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetRowsCount is finising.
+
+DEBUG:root:Using Time: 0.001996278762817383s
+DEBUG:root:Function  is finising.
+
+DEBUG:root:Function __init__ is running.
+DEBUG:root:Function getTitle is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function getTitle is finising.
+
+DEBUG:root:Function getDataFromTitle is running.
+DEBUG:root:Using Time: 0.0009968280792236328s
+DEBUG:root:Function getDataFromTitle is finising.
+
+DEBUG:root:Using Time: 0.3720099925994873s
+DEBUG:root:Function __init__ is finising.
+
+DEBUG:root:Function GetKeySet is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetKeySet is finising.
+
+DEBUG:root:Function GetRowsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetRowsCount is finising.
+
+DEBUG:root:Function GetColumnsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetColumnsCount is finising.
+
+DEBUG:root:Function PackToDict is running.
+DEBUG:root:Function GetRowsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetRowsCount is finising.
+
+DEBUG:root:Function GetRowsCount is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GetRowsCount is finising.
+
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function PackToDict is finising.
+
+DEBUG:root:Function GenFormatString is running.
+DEBUG:root:Using Time: 0.0s
+DEBUG:root:Function GenFormatString is finising.
+

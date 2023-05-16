@@ -1,6 +1,7 @@
-import psycopg2
-import pandas as pd 
 from io import StringIO
+
+import pandas as pd
+import psycopg2
 
 #conn = psycopg2.connect(database="postgres",
 #                        user="postgres",
