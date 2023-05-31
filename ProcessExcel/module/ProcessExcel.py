@@ -5,7 +5,7 @@ import pandas as pd
 from FormatString import AutoFormatSqlGenarator
 
 logging.basicConfig(
-    filename="E:\code\Python\ProcessExcel\module\example.log",
+    filename="example.log",
     encoding="utf-8",
     level=logging.DEBUG,
 )
@@ -20,7 +20,9 @@ def timer(func):
         result = func(*args, **kwargs)
         t_end = time()
         # print("time spend: {}".format(t_end - t_start))
-        logging.debug("Using Time: {}s".format(t_end - t_start))
+        logging.debug(
+            "Function {:<20}, Using Time: {} s".format(func.__name__, t_end - t_start)
+        )
         return result
 
     return wrapper
@@ -49,7 +51,6 @@ class ProcessExcel:
         self.getTitle()
         self.getDataFromTitle()
 
-    @log
     @timer
     def getTitle(self):
         # print(self.DataFrame.columns)
@@ -57,7 +58,6 @@ class ProcessExcel:
             # print("key is {}, value is {}".format(k + 1, v))
             self.ColumnsTitle.append(v)
 
-    @log
     @timer
     def getDataFromTitle(self):
         for i in range(len(self.ColumnsTitle)):
@@ -65,17 +65,14 @@ class ProcessExcel:
                 pd.Series(self.DataFrame[self.ColumnsTitle[i]].fillna("''").values)
             )
 
-    @log
     @timer
     def setTitle():
         pass
 
-    @log
     @timer
     def GetData(self) -> dict:
         return self.DataSet
 
-    @log
     @timer
     def PackToDict(self) -> dict:
         """按行读取生成字典
@@ -92,7 +89,6 @@ class ProcessExcel:
             values.append(value)
         return dict(zip(keys, values))
 
-    @log
     @timer
     def GetKeySet(self) -> list:
         """返回标签值
@@ -102,7 +98,6 @@ class ProcessExcel:
         """
         return list(self.DataSet.keys())
 
-    @log
     @timer
     @staticmethod
     def SGetRowsCount(param: dict) -> int:
@@ -116,7 +111,6 @@ class ProcessExcel:
         """
         return len(next(iter(param.values())))
 
-    @log
     @timer
     @staticmethod
     def SGetColumnsCount(param: dict) -> int:
@@ -130,13 +124,11 @@ class ProcessExcel:
         """
         return len(param.keys())
 
-    @log
     @timer
     # 返回行数
     def GetRowsCount(self) -> int:
         return len(next(iter(self.DataSet.values())))
 
-    @log
     @timer
     # 返回列数
     def GetColumnsCount(self) -> int:
@@ -144,12 +136,18 @@ class ProcessExcel:
 
 
 if __name__ == "__main__":
-    obj = ProcessExcel("E:\\code\\Python\\ProcessExcel\\src\\test.xlsx")
+    # obj = ProcessExcel("E:\\code\\Python\\ProcessExcel\\src\\test.xlsx")
+    obj = ProcessExcel("E:\\code\\Python\\ProcessExcel\\src\\合同备案.xlsx")
     print("Index is : {}".format(obj.GetKeySet()))
     print("Excel has {} rows".format(obj.GetRowsCount()))
     print("Excel has {} columns(index)".format(obj.GetColumnsCount()))
+    # tmp = AutoFormatSqlGenarator("select {0[0]},{0[1]},{0[2]},{0[3]},{0[4]} from test")
     tmp = AutoFormatSqlGenarator(
-        "select {0[0]},{0[1]},{0[2]},{0[3]},{0[4]} from test"
+        """UPDATE {0[0]} SET REC_CREATE_TIME = '{0[1]}'
+        WHERE 
+        REC_CREATE_TIME = 
+        (SELECT REC_CREATE_TIME FROM T_OMCT_BA_CONTRACT_JK WHERE CONTRACT_SERIAL_NO = '{0[2]}' 
+        ORDER BY REC_CREATE_TIME DESC FETCH FIRST 1 ROWS ONLY) 
+        AND CONTRACT_SERIAL_NO = '{0[2]}'"""
     )
     tmp.GenFormatString(obj.PackToDict())
-
