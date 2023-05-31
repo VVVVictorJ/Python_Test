@@ -1,8 +1,10 @@
 import logging
 from functools import wraps
 
+from ProcessToFile import BackUpToFile
+
 logging.basicConfig(
-    filename="E:\code\Python\ProcessExcel\module\example.log",
+    filename="example.log",
     encoding="utf-8",
     level=logging.DEBUG,
 )
@@ -37,13 +39,12 @@ def log(func):
 class AutoFormatSqlGenarator:
     def __init__(self, FormatTemplateStr: str) -> None:
         self.FormatTemplateStr = FormatTemplateStr
+        self.ProcessToFile = BackUpToFile()
 
     @log
     @timer
-    def GenFormatString(self, param: dict) -> str:
-        for k, v in param.items():
-            print(self.FormatTemplateStr.format(v))
-        return
+    def GenFormatString(self, param: dict):
+        self.ProcessToFile.ProcessDictToFile(param, self.FormatTemplateStr)
 
     @staticmethod
     def Test():
