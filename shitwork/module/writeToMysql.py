@@ -1,5 +1,14 @@
-from sqlalchemy import (TIMESTAMP, Column, ForeignKey, Integer, MetaData,
-                        String, Table, create_engine, text)
+from sqlalchemy import (
+    TIMESTAMP,
+    Column,
+    ForeignKey,
+    Integer,
+    MetaData,
+    String,
+    Table,
+    create_engine,
+    text,
+)
 
 # print(sqlalchemy.__version__)
 
