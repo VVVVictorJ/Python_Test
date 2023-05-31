@@ -1,7 +1,7 @@
 *.pyc
 .idea
 record.txt
-.gitignore
+*.gitignore
 *.csv
 *.ps1
 *.xlsx
@@ -9,3 +9,7 @@ record.txt
 *.yarn*
 *.lock
 .gitignore
+*.png
+*.txt
+*.log
+ProcessExcel/module/example.log
