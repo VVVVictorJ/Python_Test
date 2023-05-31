@@ -1,8 +1,18 @@
 import json
 
 import flask
-from flask import (Flask, abort, flash, g, jsonify, redirect, render_template,
-                   request, session, url_for)
+from flask import (
+    Flask,
+    abort,
+    flash,
+    g,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 
 ENV = 'development'
 DEBUG = True
@@ -24,6 +34,15 @@ def testGetData():
         print("error")
     return jsonify({'data':jsonj['id']})
     # return request.headers.get('Content-Type')
+
+@app.route('/ReceiveFile', methods=['POST'])
+def getDocx():
+    data = request.files
+    file = data['file']
+    print(file.filename)
+    print(request.headers)
+    file.save(file.filename)
+    return "已接受保存\n"
 
 if __name__ == '__main__':
     app.run()
