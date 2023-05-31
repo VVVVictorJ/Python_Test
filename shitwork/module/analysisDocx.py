@@ -123,7 +123,7 @@ class AnalysisDocx:
 
         try:
             df = pd.DataFrame(self.docxWordInfo)
-            df.to_csv(self.genResultPath(".csv"))
+            df.to_csv(self.genResultPath(".csv"), index=None)
         except FileNotFoundError:
             print("无法打开指定的文件！")
 
@@ -138,7 +138,7 @@ class AnalysisDocx:
                 self.resultpath = self.genResultPath()
                 if not os.path.exists(self.resultpath):
                     os.makedirs(self.resultpath)
-                for k,v in enumerate(self.docxImageDict):
+                for k, v in enumerate(self.docxImageDict):
                     self.writeToFile(self.docxImageDict[v], self.resultpath, v)
         except:
             print("写入图片出错")
