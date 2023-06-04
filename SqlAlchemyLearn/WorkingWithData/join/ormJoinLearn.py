@@ -82,3 +82,9 @@ print(select(pytest).order_by(pytest.c.username))
 # 升/降序
 print(select(pytest).order_by(pytest.c.username.desc()))
 
+print(
+    select(address_table.c.email_address)
+    .select_from(pytest)
+    .join(address_table, pytest.c.id == address_table.c.user_id)
+)
+

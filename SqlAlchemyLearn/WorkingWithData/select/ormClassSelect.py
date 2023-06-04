@@ -24,6 +24,7 @@ or
 filter_by
 """
 
+
 class Base(DeclarativeBase):
     pass
 
