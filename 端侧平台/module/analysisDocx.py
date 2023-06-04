@@ -123,6 +123,7 @@ class AnalysisDocx:
 
         try:
             df = pd.DataFrame(self.docxWordInfo)
+            # print(df.to_string(index=False))
             df.to_csv(self.genResultPath(".csv"), index=None)
         except FileNotFoundError:
             print("无法打开指定的文件！")
@@ -164,8 +165,11 @@ if __name__ == "__main__":
     #     filepath=f"E:\\code\\Python\\shitwork\\src\\251B_20220228_湛江钢铁_厚板L3系统_故障报告书_B.docx"
     # )
 
+    # print(os.getcwd())
+
     obj = AnalysisDocx(
-        filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+        # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+        filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
     )
     try:
         obj.genDocxImage()
