@@ -173,10 +173,18 @@ class ProcessDocx:
         finally:
             return ImageDict
 
+
 if __name__ == "__main__":
     obj = ProcessDocx()
     print(
-        ProcessDocx.processDocxImageInfo(
-            filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+        # ProcessDocx.processDocxImageInfo(
+        #     # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+        #     filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+        # )
+        obj.processDocxTableInfo(
+            # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+            filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
         )
     )
+
+
