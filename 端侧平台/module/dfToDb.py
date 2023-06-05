@@ -1,7 +1,7 @@
 import pandas as pd
-from sqlalchemy import create_engine
-from processDocx import ProcessDocx
 import sqlalchemy
+from processDocx import ProcessDocx
+from sqlalchemy import create_engine
 
 engine = create_engine(
     "mysql+pymysql://admin:zhj123456@127.0.0.1:3306/test?charset=utf8"
