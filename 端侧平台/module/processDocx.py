@@ -78,74 +78,98 @@ class ProcessDocx:
                         return i
 
             # 故障系统
-            self.saveToDict(cells_value[0], cells_value[3])
+            self.saveToDict("errorSystem", cells_value[3])
             # 故障名称
-            self.saveToDict(cells_value[1], cells_value[4])
+            self.saveToDict("errorName", cells_value[4])
             # 签收日期
-            self.saveToDict(cells_value[2], cells_value[5])
+            self.saveToDict("signDate", cells_value[5])
             # 故障日期
-            self.saveToDict(cells_value[6], cells_value[10])
+            self.saveToDict("errorHappenDate", cells_value[10])
             # 处理起止日期和时间 去除换行
-            self.saveToDict(cells_value[7], cells_value[11].replace("\n", " "))
+            self.saveToDict(
+                "processBeginAndEndDate", cells_value[11].replace("\n", " ")
+            )
             # 填表人
-            self.saveToDict(cells_value[8], cells_value[12])
+            self.saveToDict("filledTableUser", cells_value[12])
             # 负责人
-            self.saveToDict(cells_value[9], cells_value[13])
+            self.saveToDict("personInCharge", cells_value[13])
             # 主机系统停机时间
-            self.saveToDict(cells_value[14], cells_value[18])
+            self.saveToDict("downTime", cells_value[18])
             # [19] 存在年月
             if "月" in cells_value[19]:
                 # 历时
-                self.saveToDict("历时一", cells_value[18])
+                self.saveToDict("duringTimeOne", cells_value[18])
                 # 影响业务时间
-                self.saveToDict(cells_value[16], cells_value[19].replace("\n", " "))
+                self.saveToDict("EffectServiceTime", cells_value[19].replace("\n", " "))
                 # 历时
-                self.saveToDict("历时二", cells_value[20])
+                self.saveToDict("duringTimeTwo", cells_value[20])
                 # 现象、排障经过、原因分析 故障说明
                 self.saveToDict(
-                    cells_value[21].replace("\n", "、").replace(" ", ""),
+                    "phenomenonAndProcessAndReasonAndDiscribtion",
                     cells_value[22].replace("\n", " "),
                 )
                 # 消耗备件
-                self.saveToDict(cells_value[23][0:4], cells_value[23][-1])
+                self.saveToDict("consumedBackUp", cells_value[23][-1])
                 # 故障处理人
-                self.saveToDict(cells_value[24][0:5], cells_value[24][6:])
+                self.saveToDict("errorProcessingStaff", cells_value[24][6:])
                 x = lambda x: isR(cells_value)
+                self.saveToDict("responsibility", x(cells_value)[-4:])
                 self.saveToDict(
-                    cells_value[cells_value.index("责任")], x(cells_value)[-4:]
-                )
-                self.saveToDict(
-                    cells_value[cells_value.index("纠正和预防措施")],
+                    "correctiveAction",
                     cells_value[cells_value.index("纠正和预防措施") + 1].replace("\n", " "),
                 )
             else:
                 # 历时
-                self.saveToDict("历时一", cells_value[19])
+                self.saveToDict("duringTimeOne", cells_value[19])
                 # 影响业务时间
-                self.saveToDict(cells_value[16], cells_value[20].replace("\n", " "))
+                self.saveToDict("EffectServiceTime", cells_value[20].replace("\n", " "))
                 # 历时
-                self.saveToDict("历时二", cells_value[21])
+                self.saveToDict("duringTimeTwo", cells_value[21])
                 # 现象、排障经过、原因分析 故障说明
                 self.saveToDict(
-                    cells_value[22].replace("\n", "、").replace(" ", ""),
+                    "phenomenonAndProcessAndReasonAndDiscribtion",
                     cells_value[23].replace("\n", " "),
                 )
                 # 消耗备件
-                self.saveToDict(cells_value[24][0:4], cells_value[24][-1])
+                self.saveToDict("consumedBackUp", cells_value[24][-1])
                 # 故障处理人
-                self.saveToDict(cells_value[25][0:5], cells_value[25][6:])
+                self.saveToDict("errorProcessingStaff", cells_value[25][6:])
                 x = lambda x: isR(cells_value)
+                self.saveToDict("responsibility", x(cells_value)[-4:])
                 self.saveToDict(
-                    cells_value[cells_value.index("责任")], x(cells_value)[-4:]
-                )
-                self.saveToDict(
-                    cells_value[cells_value.index("纠正和预防措施")],
+                    "correctiveAction",
                     cells_value[cells_value.index("纠正和预防措施") + 1].replace("\n", " "),
                 )
         except FileNotFoundError:
             print("无法打开指定的文件!")
         finally:
             return self.docxWordInfo
+
+    @staticmethod
+    def processDocxtableInfo(filepath: str):
+        def RemoveDuplication(cellList: list):
+            cells_value = []
+            for ele in cellList:
+                # 栈为空直接入栈
+                if len(cells_value) == 0:
+                    cells_value.append(ele)
+                else:
+                    if cells_value[-1] != ele:
+                        cells_value.append(ele)
+            return cells_value
+
+        try:
+            file = Document(filepath)
+            table = file.tables[0]
+            cells = table._cells
+            cells_string = [cell.text for cell in cells]
+            cells_value = RemoveDuplication(cells_string)
+            no = 0
+            for i in cells_value:
+                print(no, i)
+                no = no + 1
+        except:
+            pass
 
     @staticmethod
     def processDocxImageInfo(filepath: str):
@@ -176,15 +200,29 @@ class ProcessDocx:
 
 if __name__ == "__main__":
     obj = ProcessDocx()
-    print(
-        # ProcessDocx.processDocxImageInfo(
-        #     # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
-        #     filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
-        # )
-        obj.processDocxTableInfo(
-            # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
-            filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
-        )
+    # print(
+    #     # ProcessDocx.processDocxImageInfo(
+    #     #     # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+    #     #     filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+    #     # )
+    #     obj.processDocxTableInfo(
+    #         # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+    #         filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx",
+    #     )
+    # )
+    # ProcessDocx.processDocxtableInfo(
+    #     filepath=f"E:\\code\\Python\\端侧平台\\src\\20221104_湛江钢铁_物资进出厂系统_故障报告书_B (1).docx"
+    # )
+    # ProcessDocx.processDocxtableInfo(
+    #     filepath=f"E:\\code\\Python\\端侧平台\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+    # )
+    # ProcessDocx.processDocxtableInfo(
+    #     filepath=f"E:\\code\\Python\\端侧平台\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+    # )
+    ProcessDocx.processDocxImageInfo(
+        filepath=f"E:\\code\\Python\\端侧平台\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
     )
-
-
+    for k, v in ProcessDocx.processDocxImageInfo(
+        filepath=f"E:\\code\\Python\\端侧平台\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+    ).items():
+        print(v)
