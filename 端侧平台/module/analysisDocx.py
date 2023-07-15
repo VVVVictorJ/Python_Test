@@ -57,7 +57,7 @@ class AnalysisDocx:
             a.append(suffix)
             return ".".join(a)
 
-    def genImageRocord(self, val):
+    def genImageRecord(self, val):
         """存储图片地址至列表
 
         Args:
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
     obj = AnalysisDocx(
         # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
-        filepath=f"E:\\code\\python\\Python_Test\\端侧平台\\module\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
+        filepath=f"E:\\code\\Python\\端侧平台\\src\\20220325_湛江钢铁_物质出入厂系统_故障报告书_B(1).docx"
     )
     try:
         obj.genDocxImage()

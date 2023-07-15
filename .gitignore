@@ -10,6 +10,8 @@ record.txt
 *.lock
 .gitignore
 *.png
+*.jpg
 *.txt
 *.log
 ProcessExcel/module/example.log
+端侧平台/module/dfToDb.py
