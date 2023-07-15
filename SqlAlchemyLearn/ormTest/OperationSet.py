@@ -111,7 +111,7 @@ class DCYW0020(Base):
 
 def write_to_db():
     engine = create_engine(
-        "mysql+pymysql://bwms:bwms_user@www.zjbaosight.com:3306/bwms?charset=utf8",
+        "",
         echo=True,
     )
     Base.metadata.create_all(engine)
@@ -151,7 +151,7 @@ def write_to_db():
 
 def read_from_db():
     engine = create_engine(
-        "mysql+pymysql://bwms:bwms_user@www.zjbaosight.com:3306/bwms?charset=utf8",
+        "",
         echo=True,
     )
     Base.metadata.create_all(engine)
