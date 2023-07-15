@@ -180,3 +180,5 @@ if __name__ == "__main__":
         print("指定了未知的编码!")
     except UnicodeDecodeError:
         print("读取文件时解码错误!")
+    except Exception as e:
+        print(e)
