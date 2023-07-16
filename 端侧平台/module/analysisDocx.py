@@ -27,11 +27,15 @@ class AnalysisDocx:
             TypeError: 文件路径不存在
             TypeError: 非docx文件
         """
-        if not os.path.isfile(filepath):
+        abspath = os.path.join(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"),
+            filepath,
+        )
+        if not os.path.isfile(abspath):
             raise TypeError("NOT FILEPATH")
         if not filepath.endswith(".docx"):
             raise TypeError("NOT DOCX FILE")
-        self.filepath = filepath
+        self.filepath = abspath
         self.uuidStr = str(uuid.uuid4())
         self.resultpath = ""
         self.docxWordInfo = {}
@@ -169,7 +173,7 @@ if __name__ == "__main__":
 
     obj = AnalysisDocx(
         # filepath=f"E:\\code\\Python\\shitwork\\src\\2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
-        filepath=f"E:\\code\\Python\\端侧平台\\src\\20220325_湛江钢铁_物质出入厂系统_故障报告书_B(1).docx"
+        filepath=f"2518_20220110_湛江钢铁_炼钢热轧L3系统_故障报告书_B.docx"
     )
     try:
         obj.genDocxImage()
