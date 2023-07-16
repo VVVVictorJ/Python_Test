@@ -5,6 +5,11 @@ import uuid
 from docx import Document
 
 
+from sqlalchemy import String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+from insertToDcyw0020 import DCYW0020, Base
+
+
 class ProcessDocx:
     docxWordInfo = {}
 
@@ -196,6 +201,73 @@ class ProcessDocx:
             print("写图片出错")
         finally:
             return ImageDict
+        
+    def write_to_dcyw0020(
+        ERROR_REPORT_FILE_ID,
+        ERROR_EQUIPMENT_NAME,
+        ERROR_RESPONSIBILITY_AREA,
+        ERROR_START_TIME,
+        ERROR_END_TIME,
+        ERROR_SHUTDOWN_START_TIME,
+        ERROR_SHUTDOWN_END_TIME,
+        ERROR_EFFECT_BUSINESS_START_TIME,
+        ERROR_EFFECT_BUSINESS_END_TIME,
+        ERROR_SHUTDOWN_PERIOD,
+        ERROR_EFFECT_BUSINESS_PERIOD,
+        ERROR_PHENOMENON,
+        ERROR_SHORTCUT_DESCRIPTION,
+        ERROR_PROPERTY,
+        ERROR_HAPPEN_DATE,
+        ERROR_REASON,
+        ERROR_INSPECTION,
+        ERROR_CONSUME_BACKUP,
+        ERROR_PROCESSORS,
+        ERROR_TAKE_CHARGE,
+        ERROR_CORRECTIVE_ACTION_AND_PREVENTION_MEASURES,
+        REC_CREATE_TIME,
+        REC_CREATOR,
+        REC_REVISE_TIME,
+        RECORD_REVISE_COUNT,
+        REC_REVISOR,
+    ):
+        engine = create_engine(
+            "",
+            echo=True,
+        )
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        dcyw0020 = DCYW0020(
+            ERROR_REPORT_FILE_ID,
+            ERROR_EQUIPMENT_NAME,
+            ERROR_RESPONSIBILITY_AREA,
+            ERROR_START_TIME,
+            ERROR_END_TIME,
+            ERROR_SHUTDOWN_START_TIME,
+            ERROR_SHUTDOWN_END_TIME,
+            ERROR_EFFECT_BUSINESS_START_TIME,
+            ERROR_EFFECT_BUSINESS_END_TIME,
+            ERROR_SHUTDOWN_PERIOD,
+            ERROR_EFFECT_BUSINESS_PERIOD,
+            ERROR_PHENOMENON,
+            ERROR_SHORTCUT_DESCRIPTION,
+            ERROR_PROPERTY,
+            ERROR_HAPPEN_DATE,
+            ERROR_REASON,
+            ERROR_INSPECTION,
+            ERROR_CONSUME_BACKUP,
+            ERROR_PROCESSORS,
+            ERROR_TAKE_CHARGE,
+            ERROR_CORRECTIVE_ACTION_AND_PREVENTION_MEASURES,
+            REC_CREATE_TIME,
+            REC_CREATOR,
+            REC_REVISE_TIME,
+            RECORD_REVISE_COUNT,
+            REC_REVISOR,
+        )
+        session.add(dcyw0020)
+        session.commit()
+        session.close()
 
 
 if __name__ == "__main__":
