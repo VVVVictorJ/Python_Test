@@ -107,7 +107,35 @@ class DCYW0020(Base):
         return f"dcyw0020(id={self.ERROR_REPORT_FILE_ID!r}, name={self.ERROR_EQUIPMENT_NAME!r}, fullname={self.ERROR_RESPONSIBILITY_AREA!r})"
 
 
-def write_to_db():
+
+def write_to_db(
+    ERROR_REPORT_FILE_ID,
+    ERROR_EQUIPMENT_NAME,
+    ERROR_RESPONSIBILITY_AREA,
+    ERROR_START_TIME,
+    ERROR_END_TIME,
+    ERROR_SHUTDOWN_START_TIME,
+    ERROR_SHUTDOWN_END_TIME,
+    ERROR_EFFECT_BUSINESS_START_TIME,
+    ERROR_EFFECT_BUSINESS_END_TIME,
+    ERROR_SHUTDOWN_PERIOD,
+    ERROR_EFFECT_BUSINESS_PERIOD,
+    ERROR_PHENOMENON,
+    ERROR_SHORTCUT_DESCRIPTION,
+    ERROR_PROPERTY,
+    ERROR_HAPPEN_DATE,
+    ERROR_REASON,
+    ERROR_INSPECTION,
+    ERROR_CONSUME_BACKUP,
+    ERROR_PROCESSORS,
+    ERROR_TAKE_CHARGE,
+    ERROR_CORRECTIVE_ACTION_AND_PREVENTION_MEASURES,
+    REC_CREATE_TIME,
+    REC_CREATOR,
+    REC_REVISE_TIME,
+    RECORD_REVISE_COUNT,
+    REC_REVISOR,
+):
     engine = create_engine(
         "",
         echo=True,
@@ -116,52 +144,33 @@ def write_to_db():
     Session = sessionmaker(bind=engine)
     session = Session()
     dcyw0020 = DCYW0020(
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        1.1,
-        1.2,
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "20",
-        "21",
-        "22",
-        "23",
-        "24",
-        0,
-        "26",
+        ERROR_REPORT_FILE_ID,
+        ERROR_EQUIPMENT_NAME,
+        ERROR_RESPONSIBILITY_AREA,
+        ERROR_START_TIME,
+        ERROR_END_TIME,
+        ERROR_SHUTDOWN_START_TIME,
+        ERROR_SHUTDOWN_END_TIME,
+        ERROR_EFFECT_BUSINESS_START_TIME,
+        ERROR_EFFECT_BUSINESS_END_TIME,
+        ERROR_SHUTDOWN_PERIOD,
+        ERROR_EFFECT_BUSINESS_PERIOD,
+        ERROR_PHENOMENON,
+        ERROR_SHORTCUT_DESCRIPTION,
+        ERROR_PROPERTY,
+        ERROR_HAPPEN_DATE,
+        ERROR_REASON,
+        ERROR_INSPECTION,
+        ERROR_CONSUME_BACKUP,
+        ERROR_PROCESSORS,
+        ERROR_TAKE_CHARGE,
+        ERROR_CORRECTIVE_ACTION_AND_PREVENTION_MEASURES,
+        REC_CREATE_TIME,
+        REC_CREATOR,
+        REC_REVISE_TIME,
+        RECORD_REVISE_COUNT,
+        REC_REVISOR,
     )
     session.add(dcyw0020)
     session.commit()
     session.close()
-
-def read_from_db():
-    engine = create_engine(
-        "",
-        echo=True,
-    )
-    Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    # 读取数据库
-    a = session.query(DCYW0020).filter_by(ERROR_REPORT_FILE_ID="1B220231").first()
-    print(a)
-    session.close()
-
-
-if __name__ == "__main__":
-    write_to_db()
-    # read_from_db()
-    # print(ran
