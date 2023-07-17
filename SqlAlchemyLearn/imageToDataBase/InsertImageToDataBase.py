@@ -1,30 +1,11 @@
 # 使用sqlalchemy将1.jpg存入mysql
 #     使用sqlalchemy将1.jpg存入mysql数据库
-import base64
-import os
-import random
-import re
 
-import pymysql
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    Float,
-    Integer,
-    LargeBinary,
-    String,
-    Text,
-    create_engine,
-)
+import random
+
+from sqlalchemy import LargeBinary, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    Mapped,
-    mapped_column,
-    relationship,
-    sessionmaker,
-)
+from sqlalchemy.orm import Mapped, mapped_column, sessionmaker
 
 Base = declarative_base()
 
