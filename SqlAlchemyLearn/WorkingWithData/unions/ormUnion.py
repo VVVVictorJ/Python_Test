@@ -11,22 +11,21 @@ from sqlalchemy import (
     and_,
     bindparam,
     create_engine,
+    func,
+    literal_column,
     or_,
     select,
     text,
-    literal_column,
-    func,
     union_all,
 )
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
+    Session,
+    aliased,
     mapped_column,
     relationship,
-    aliased,
-    Session,
 )
-
 
 metadata_obj = MetaData()
 

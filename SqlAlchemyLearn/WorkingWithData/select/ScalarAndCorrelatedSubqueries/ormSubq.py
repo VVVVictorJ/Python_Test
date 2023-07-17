@@ -11,14 +11,13 @@ from sqlalchemy import (
     and_,
     bindparam,
     create_engine,
+    func,
+    literal_column,
     or_,
     select,
     text,
-    literal_column,
-    func,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-
 
 metadata_obj = MetaData()
 
@@ -93,4 +92,3 @@ with engine.connect() as conn:
         .order_by(pytest.c.id, address_table.c.id)
     )
     print(result.all())
-

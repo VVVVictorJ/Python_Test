@@ -11,13 +11,12 @@ from sqlalchemy import (
     and_,
     bindparam,
     create_engine,
+    literal_column,
     or_,
     select,
     text,
-    literal_column,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-
 
 metadata_obj = MetaData()
 
@@ -56,4 +55,3 @@ print(
     .where(pytest.c.name == "jack")
     .where(pytest.c.username == "victor")
 )
-
