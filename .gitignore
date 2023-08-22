@@ -15,3 +15,4 @@ record.txt
 *.log
 ProcessExcel/module/example.log
 端侧平台/module/dfToDb.py
+AutoImport/dbUtils.py
