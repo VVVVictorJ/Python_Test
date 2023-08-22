@@ -1,18 +1,20 @@
-import os 
+import os
 import sys
-import yaml
-import xlrd
-from LogUtils import Log
 
+import xlrd
+import yaml
+from LogUtils import Log
 
 realpath = os.path.dirname(os.path.realpath(sys.argv[0]))
 print(realpath)
 path = os.path.join(realpath, "config.yaml")
 print(path)
 
-patt=r"C:\Users\vanPersie\Document\Python\analysisExcel\analysisExcel\ProcessExcel\src\test"
+patt = r"C:\Users\vanPersie\Document\Python\analysisExcel\analysisExcel\ProcessExcel\src\test"
+
+
 def getConfigValue():
-    #TODO 待修改成exe所在文件夹的路径
+    # TODO 待修改成exe所在文件夹的路径
     yamlFilePath = os.path.join(
         realpath,
         "config.yaml",
@@ -21,6 +23,8 @@ def getConfigValue():
     cfg = f.read()
     d = yaml.load(cfg, Loader=yaml.FullLoader)
     return d
+
+
 # print(getConfigValue()["DATABASE_URI"])
 # print(getConfigValue()["FILEPATH"])
 # workbook = xlrd.open_workbook(
@@ -41,17 +45,22 @@ def getConfigValue():
 
 for filepath in [
     os.path.join(getConfigValue()["FILEPATH"], file)
-    for file in os.listdir(getConfigValue()["FILEPATH"]) if os.path.isfile(file) and file.endswith(".xls")
-    ]:
+    for file in os.listdir(getConfigValue()["FILEPATH"])
+    if os.path.isfile(file) and file.endswith(".xls")
+]:
     print(filepath)
 
-l = [ file
-    for file in os.listdir(getConfigValue()["FILEPATH"]) if os.path.isfile(file) and file.endswith(".xls")
-    ]
+l = [
+    file
+    for file in os.listdir(getConfigValue()["FILEPATH"])
+    if os.path.isfile(file) and file.endswith(".xls")
+]
 print(getConfigValue()["FILEPATH"])
 print(l)
-for file in os.listdir(getConfigValue()["FILEPATH"]): 
-    if os.path.isfile(os.path.join(getConfigValue()["FILEPATH"], file)) and file.endswith(".xls"):
+for file in os.listdir(getConfigValue()["FILEPATH"]):
+    if os.path.isfile(
+        os.path.join(getConfigValue()["FILEPATH"], file)
+    ) and file.endswith(".xls"):
         print(file)
 # print(getConfigValue()["LOGPATH"])
 # if os.path.exists(getConfigValue()["LOGPATH"]):

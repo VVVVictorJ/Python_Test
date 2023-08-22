@@ -1,14 +1,15 @@
-import os
-import xlrd
-import sys
-import io
-import uuid
-import getpass
 import datetime
-from xlrd import xldate_as_tuple
-from LogUtils import Log
+import getpass
+import io
+import os
+import sys
+import uuid
+
+import xlrd
 from dbUtils import MutilpleDatabaseOperation
 from fileUtils import FileUtils
+from LogUtils import Log
+from xlrd import xldate_as_tuple
 
 LogPath = FileUtils.getConfigValue()["LOGPATH"]
 FilePath = FileUtils.getConfigValue()["FILEPATH"]
@@ -33,8 +34,7 @@ obj = MutilpleDatabaseOperation()
 for filepath in [
     os.path.join(FilePath, file)
     for file in os.listdir(FilePath)
-    if os.path.isfile(os.path.join(FilePath, file))
-    and file.endswith(".xls")
+    if os.path.isfile(os.path.join(FilePath, file)) and file.endswith(".xls")
 ]:
     workbook = xlrd.open_workbook(
         filepath,
@@ -50,15 +50,25 @@ for filepath in [
         sheet1_object.cell_value(1, 1),
         sheet1_object.cell_value(1, 4),
         sheet1_object.cell_value(1, 7),
-        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(1, 10), 0)).strftime('%Y-%m-%d'),
+        datetime.datetime(
+            *xldate_as_tuple(sheet1_object.cell_value(1, 10), 0)
+        ).strftime("%Y-%m-%d"),
         sheet1_object.cell_value(2, 1),
         sheet1_object.cell_value(2, 4),
-        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(2, 7), 0)).strftime('%Y-%m-%d'),
-        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(2, 10), 0)).strftime('%Y-%m-%d'),
+        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(2, 7), 0)).strftime(
+            "%Y-%m-%d"
+        ),
+        datetime.datetime(
+            *xldate_as_tuple(sheet1_object.cell_value(2, 10), 0)
+        ).strftime("%Y-%m-%d"),
         sheet1_object.cell_value(3, 1),
         sheet1_object.cell_value(3, 4),
-        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(3, 7), 0)).strftime('%Y-%m-%d'),
-        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(3, 10), 0)).strftime('%Y-%m-%d'),
+        datetime.datetime(*xldate_as_tuple(sheet1_object.cell_value(3, 7), 0)).strftime(
+            "%Y-%m-%d"
+        ),
+        datetime.datetime(
+            *xldate_as_tuple(sheet1_object.cell_value(3, 10), 0)
+        ).strftime("%Y-%m-%d"),
         sheet1_object.cell_value(4, 1),
         sheet1_object.cell_value(4, 4),
         sheet1_object.cell_value(4, 7),
@@ -87,9 +97,13 @@ for filepath in [
             sheet1_object.cell(n, 2).value,
             sheet1_object.cell(n, 3).value,
             sheet1_object.cell(n, 4).value,
-            datetime.datetime(*xldate_as_tuple(sheet1_object.cell(n, 5).value, 0)).strftime('%Y-%m-%d'),
+            datetime.datetime(
+                *xldate_as_tuple(sheet1_object.cell(n, 5).value, 0)
+            ).strftime("%Y-%m-%d"),
             sheet1_object.cell(n, 6).value,
-            datetime.datetime(*xldate_as_tuple(sheet1_object.cell(n, 7).value, 0)).strftime('%Y-%m-%d'),
+            datetime.datetime(
+                *xldate_as_tuple(sheet1_object.cell(n, 7).value, 0)
+            ).strftime("%Y-%m-%d"),
             sheet1_object.cell(n, 8).value,
             sheet1_object.cell(n, 9).value,
             sheet1_object.cell(n, 10).value,
@@ -100,4 +114,3 @@ for filepath in [
 # log.info("导入完毕")
 obj.close()
 os.system("pause")
-

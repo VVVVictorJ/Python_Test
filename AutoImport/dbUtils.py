@@ -134,6 +134,7 @@ class MutilpleDatabaseOperation:
         self.log = Log(self.__class__.__name__, FileUtils.getConfigValue()["LOGPATH"]).getlog()
         self.engine = create_engine(
             # FileUtils.getConfigValue()["DATABASE_URI"],
+            "mysql+pymysql://python_user:s7ALSyFSwIKOZXdx@kids.zjbaosight.com:10036/bwms_ext?charset=utf8",
             echo=False,
         )
         self.Base.metadata.create_all(self.engine)
