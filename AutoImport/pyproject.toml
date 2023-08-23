@@ -1,0 +1,22 @@
+[project]
+name = "AutoImport"
+version = "0.1.0"
+description = "auto import excel"
+authors = [
+    {name = "VVVVictorJ", email = "956951190@qq.com"},
+]
+dependencies = [
+    "sqlalchemy>=2.0.20",
+    "pyyaml>=6.0.1",
+    "xlrd>=2.0.1",
+    "PyMysql>=1.1.0",
+    "tqdm>=4.66.1",
+    "pyinstaller>=4.5.1",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
