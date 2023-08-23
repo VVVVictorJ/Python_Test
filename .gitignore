@@ -16,3 +16,9 @@ record.txt
 ProcessExcel/module/example.log
 端侧平台/module/dfToDb.py
 AutoImport/dbUtils.py
+AutoImport/dbUtils.py
+AutoImport/config.yaml
+AutoImport/tests/__init__.py
+AutoImport/src/autoimport/__init__.py
+AutoImport/README.md
+AutoImport/config.yaml
