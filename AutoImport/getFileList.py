@@ -5,74 +5,83 @@ import xlrd
 import yaml
 from LogUtils import Log
 
-realpath = os.path.dirname(os.path.realpath(sys.argv[0]))
-print(realpath)
-path = os.path.join(realpath, "config.yaml")
-print(path)
+# realpath = os.path.dirname(os.path.realpath(sys.argv[0]))
+# print(realpath)
+# path = os.path.join(realpath, "config.yaml")
+# print(path)
 
-patt = r"C:\Users\vanPersie\Document\Python\analysisExcel\analysisExcel\ProcessExcel\src\test"
-
-
-def getConfigValue():
-    # TODO 待修改成exe所在文件夹的路径
-    yamlFilePath = os.path.join(
-        realpath,
-        "config.yaml",
-    )
-    f = open(yamlFilePath, "r", encoding="utf-8")
-    cfg = f.read()
-    d = yaml.load(cfg, Loader=yaml.FullLoader)
-    return d
+# patt = r"C:\Users\vanPersie\Document\Python\analysisExcel\analysisExcel\ProcessExcel\src\test"
 
 
-# print(getConfigValue()["DATABASE_URI"])
-# print(getConfigValue()["FILEPATH"])
-# workbook = xlrd.open_workbook(
-#     getConfigValue()["FILEPATH"],
-#     formatting_info=True,
-# )
-
-# l = [os.path.join(getConfigValue()["FILEPATH"],file) for file in os.listdir(getConfigValue()["FILEPATH"])]
-# for filepath in l:
-#     workbook = xlrd.open_workbook(
-#     filepath,
-#     formatting_info=True,
+# def getConfigValue():
+#     # TODO 待修改成exe所在文件夹的路径
+#     yamlFilePath = os.path.join(
+#         realpath,
+#         "config.yaml",
 #     )
-#     sheet1_object = workbook.sheet_by_name(getConfigValue()["SHEETNAME"])
-#     # print(sheet1_object.merged_cells)
-#     print(type(sheet1_object.cell_value(1, 1)))
-#     print(type(int(sheet1_object.cell_value(1, 1))))
+#     f = open(yamlFilePath, "r", encoding="utf-8")
+#     cfg = f.read()
+#     d = yaml.load(cfg, Loader=yaml.FullLoader)
+#     return d
 
-for filepath in [
-    os.path.join(getConfigValue()["FILEPATH"], file)
-    for file in os.listdir(getConfigValue()["FILEPATH"])
-    if os.path.isfile(file) and file.endswith(".xls")
-]:
-    print(filepath)
 
-l = [
-    file
-    for file in os.listdir(getConfigValue()["FILEPATH"])
-    if os.path.isfile(file) and file.endswith(".xls")
-]
-print(getConfigValue()["FILEPATH"])
-print(l)
-for file in os.listdir(getConfigValue()["FILEPATH"]):
-    if os.path.isfile(
-        os.path.join(getConfigValue()["FILEPATH"], file)
-    ) and file.endswith(".xls"):
-        print(file)
-# print(getConfigValue()["LOGPATH"])
-# if os.path.exists(getConfigValue()["LOGPATH"]):
-#     print("true")
-# else:
-#     os.makedirs(getConfigValue()["LOGPATH"])
-#     if os.path.exists(getConfigValue()["LOGPATH"]):
-#         print("true")
+# # print(getConfigValue()["DATABASE_URI"])
+# # print(getConfigValue()["FILEPATH"])
+# # workbook = xlrd.open_workbook(
+# #     getConfigValue()["FILEPATH"],
+# #     formatting_info=True,
+# # )
 
-log = Log("a").getlog()
-log.info("test")
+# # l = [os.path.join(getConfigValue()["FILEPATH"],file) for file in os.listdir(getConfigValue()["FILEPATH"])]
+# # for filepath in l:
+# #     workbook = xlrd.open_workbook(
+# #     filepath,
+# #     formatting_info=True,
+# #     )
+# #     sheet1_object = workbook.sheet_by_name(getConfigValue()["SHEETNAME"])
+# #     # print(sheet1_object.merged_cells)
+# #     print(type(sheet1_object.cell_value(1, 1)))
+# #     print(type(int(sheet1_object.cell_value(1, 1))))
+
+# for filepath in [
+#     os.path.join(getConfigValue()["FILEPATH"], file)
+#     for file in os.listdir(getConfigValue()["FILEPATH"])
+#     if os.path.isfile(file) and file.endswith(".xls")
+# ]:
+#     print(filepath)
+
+# l = [
+#     file
+#     for file in os.listdir(getConfigValue()["FILEPATH"])
+#     if os.path.isfile(file) and file.endswith(".xls")
+# ]
+# print(getConfigValue()["FILEPATH"])
+# print(l)
+# for file in os.listdir(getConfigValue()["FILEPATH"]):
+#     if os.path.isfile(
+#         os.path.join(getConfigValue()["FILEPATH"], file)
+#     ) and file.endswith(".xls"):
+#         print(file)
+# # print(getConfigValue()["LOGPATH"])
+# # if os.path.exists(getConfigValue()["LOGPATH"]):
+# #     print("true")
+# # else:
+# #     os.makedirs(getConfigValue()["LOGPATH"])
+# #     if os.path.exists(getConfigValue()["LOGPATH"]):
+# #         print("true")
+
+# log = Log("a").getlog()
+# log.info("test")
 
 
 # for file in os.listdir(path):
 #     file_path = os.path.join(path, file)
+
+lst = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = lambda x: [item for sublist in x for item in sublist]
+new_lst = flattened(lst)
+print(new_lst)
+
+lst1 = [{"1":"2","3":"4"},{"5":"6","7":"8"}]
+a = lambda x: [k for sublist in x for k in sublist.keys()]
+print(a(lst1))
