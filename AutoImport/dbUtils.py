@@ -133,7 +133,7 @@ class MutilpleDatabaseOperation:
     def __init__(self):
         self.log = Log(self.__class__.__name__, FileUtils.getConfigValue()["LOGPATH"]).getlog()
         self.engine = create_engine(
-            # FileUtils.getConfigValue()["DATABASE_URI"],
+            FileUtils.getConfigValue()["DATABASE_URI"],
             echo=False,
         )
         self.Base.metadata.create_all(self.engine)
