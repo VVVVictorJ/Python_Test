@@ -24,10 +24,10 @@ class Log(object):
         self.log_name = os.path.join(logpath, f"AutoImport_log_{self.log_time}.log")
 
         fh = logging.FileHandler(self.log_name, mode="a", encoding="utf-8")
-        fh.setLevel(logging.INFO)
+        fh.setLevel(logging.ERROR)
 
         ch = logging.StreamHandler()
-        ch.setLevel(logging.INFO)
+        ch.setLevel(logging.ERROR)
 
         formatter = logging.Formatter(
             "[%(asctime)s] [%(name)s - %(levelname)s] %(filename)s->%(funcName)s [line:%(lineno)d]: %(message)s"
