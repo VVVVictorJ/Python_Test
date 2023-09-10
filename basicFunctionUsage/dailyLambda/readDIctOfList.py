@@ -70,3 +70,14 @@ create_dict = lambda key, value: {key: value}
 result = create_dict("name", "Alice")
 
 print(result)
+
+
+keys = ["name", "age", "city"]
+values = ["Alice", 25, "New York"]
+
+# 生成hashmap
+# map(lambda key, value: (key, value), keys, values)
+# 生成字典
+result = dict(map(lambda key, value: (key, value), keys, values))
+
+print(result)
