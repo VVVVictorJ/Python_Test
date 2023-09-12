@@ -11,6 +11,7 @@ class MutilpleDatabaseOperation:
     class DCYW0023(Base):
         __tablename__ = "project_weekly_report_record"
         unique_id: Mapped[str] = mapped_column(String(100), primary_key=True)
+        week_date: Mapped[str] = mapped_column(String(100))
         project_id: Mapped[str] = mapped_column(String(100))
         department: Mapped[str] = mapped_column(String(100))
         current_period: Mapped[str] = mapped_column(String(100))
@@ -34,6 +35,7 @@ class MutilpleDatabaseOperation:
         def __init__(
             self,
             unique_id,
+            week_date,
             project_id,
             department,
             current_period,
@@ -55,6 +57,7 @@ class MutilpleDatabaseOperation:
             postscript,
         ):
             self.unique_id = unique_id
+            self.week_date = week_date
             self.project_id = project_id
             self.department = department
             self.current_period = current_period
@@ -81,6 +84,7 @@ class MutilpleDatabaseOperation:
     class DCYW0024(Base):
         __tablename__ = "project_problems_record"
         unique_id: Mapped[str] = mapped_column(String(100), primary_key=True)
+        week_date: Mapped[str] = mapped_column(String(100))
         project_id: Mapped[str] = mapped_column(String(100))
         exist_threat_and_problems: Mapped[str] = mapped_column(String(100))
         solutions: Mapped[str] = mapped_column(String(100))
@@ -98,6 +102,7 @@ class MutilpleDatabaseOperation:
         def __init__(
             self,
             unique_id,
+            week_date,
             project_id,
             exist_threat_and_problems,
             solutions,
@@ -113,6 +118,7 @@ class MutilpleDatabaseOperation:
             department_opinion,
         ):
             self.unique_id = unique_id
+            self.week_date = week_date
             self.project_id = project_id
             self.exist_threat_and_problems = (exist_threat_and_problems,)
             self.solutions = (solutions,)
@@ -131,7 +137,9 @@ class MutilpleDatabaseOperation:
             return f"project_weekly_report_record(id={self.project_id!r})"
 
     def __init__(self):
-        self.log = Log(self.__class__.__name__, FileUtils.getConfigValue()["LOGPATH"]).getlog()
+        self.log = Log(
+            self.__class__.__name__, FileUtils.getConfigValue()["LOGPATH"]
+        ).getlog()
         self.engine = create_engine(
             FileUtils.getConfigValue()["DATABASE_URI"],
             echo=False,
@@ -148,6 +156,7 @@ class MutilpleDatabaseOperation:
     def write_to_db(
         self,
         unique_id,
+        week_date,
         project_id,
         department,
         current_period,
@@ -170,6 +179,7 @@ class MutilpleDatabaseOperation:
     ):
         dcyw0023 = self.DCYW0023(
             unique_id,
+            week_date,
             project_id,
             department,
             current_period,
@@ -193,11 +203,16 @@ class MutilpleDatabaseOperation:
         self.session.add(dcyw0023)
         self.session.commit()
         # self.close()
-        self.log.info("[project_weekly_report_record][insert]@[unique_id]:[{}]@[projectId]:[{}]".format(unique_id, project_id))
+        self.log.info(
+            "[project_weekly_report_record][insert]@[unique_id]:[{}]@[projectId]:[{}]".format(
+                unique_id, project_id
+            )
+        )
 
     def write_to_db1(
         self,
         unique_id,
+        week_date,
         project_id,
         exist_threat_and_problems,
         solutions,
@@ -214,6 +229,7 @@ class MutilpleDatabaseOperation:
     ):
         dcyw0024 = self.DCYW0024(
             unique_id,
+            week_date,
             project_id,
             exist_threat_and_problems,
             solutions,
@@ -231,33 +247,44 @@ class MutilpleDatabaseOperation:
         self.session.add(dcyw0024)
         self.session.commit()
         # self.close()
-        self.log.info("[project_problems_record]:[insert]@[unique_id]:[{}]@[projectId]:[{}]".format(unique_id, project_id))
+        self.log.info(
+            "[project_problems_record]:[insert]@[unique_id]:[{}]@[projectId]:[{}]".format(
+                unique_id, project_id
+            )
+        )
 
-    def delete(self, project_id):
+    def delete(self, project_id, week_date):
         self.session.query(self.DCYW0023).filter(
             self.DCYW0023.project_id == project_id
-        ).delete()
+        ).filter(self.DCYW0023.week_date == week_date).delete()
         # self.close()
         self.session.commit()
-        self.log.info("[project_weekly_report_record][delete]@[projectId]:[{}]".format(project_id))
+        self.log.info(
+            "[project_weekly_report_record][delete]@[projectId]:[{}]@[week_date]:[{}]".format(
+                project_id, week_date
+            )
+        )
 
-    def delete1(self, project_id):
+    def delete1(self, project_id, week_date):
         self.session.query(self.DCYW0024).filter(
             self.DCYW0024.project_id == project_id
-        ).delete()
+        ).filter(self.DCYW0024.week_date == week_date).delete()
         # self.close()
         self.session.commit()
-        self.log.info("[project_problems_record]:[delete]@[projectId]:[{}]".format(project_id))
+        self.log.info(
+            "[project_problems_record]:[delete]@[projectId]:[{}]@[week_date]:[{}]".format(
+                project_id, week_date
+            )
+        )
 
 
-
-# if __name__ == "__main__":
-#     obj = MutilpleDatabaseOperation()
+if __name__ == "__main__":
+    obj = MutilpleDatabaseOperation()
 #     obj.write_to_db(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
 #     # obj.write_to_db(1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
 #     # obj.write_to_db(100,"FP23P0028",2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
 #     # obj.write_to_db1(11,0,1,2,3,4,5,6,7,8,9,10,11,12)
 #     # obj.write_to_db1(12,1,1,2,3,4,5,6,7,8,9,10,11,12)
 #     # obj.write_to_db1(13,1,1,2,3,4,5,6,7,8,9,10,11,12)
-#     # obj.delete("FP23P0028")
+    # obj.delete("FP22P0072", "20230821")
 #     # obj.delete1(0)
