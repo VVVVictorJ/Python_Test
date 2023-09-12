@@ -14,7 +14,7 @@ class processModule:
     def Process(self, fileList: list, SheetName):
         """
         Process the given file list and sheet name.
-        
+
         Args:
             fileList (list): A list of files to process.
             SheetName: The name of the sheet to process.
@@ -34,7 +34,7 @@ class processModule:
 
         Returns:
             list: A list of errors encountered during preprocessing.
-        """        
+        """
         errorList = []
         problems_record = []
         for filepath in tqdm(
@@ -113,6 +113,18 @@ class processModule:
         return self.PreProcessProblemsRecord(errorList, problems_record, SheetName)
 
     def PreProcessProblemsRecord(self, errorList, problems_record, SheetName):
+        """
+        Preprocesses the problems record by iterating through the `problems_record` list and performing various operations on each item. It opens each file in `problems_record` using `xlrd` library, retrieves the specified sheet named `SheetName`, and checks the values of certain cells for validity. It appends the filepath to `filelist` if the value in the first cell of the current row is "无". It also checks the format and validity of the values in the cells representing the expected resolution time, the submission time, and the actual resolution time. If any of these values are incorrect, an error message is appended to `errorList`. After iterating through all items, it removes any items from `problems_record` that had errors. Finally, it calls the `ProcessFileWeeklyReport` method with the updated `problems_record`, `errorList`, and `SheetName` as arguments and returns the result.
+
+        :param errorList: A list to store error messages.
+        :type errorList: list
+        :param problems_record: The list of problems records.
+        :type problems_record: list
+        :param SheetName: The name of the sheet to retrieve from each file.
+        :type SheetName: str
+        :return: The result of the `ProcessFileWeeklyReport` method.
+        :rtype: unknown
+        """
         filelist = []
         # print(len(problems_record))
         for key, item in tqdm(
