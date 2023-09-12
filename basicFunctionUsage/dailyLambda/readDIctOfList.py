@@ -17,9 +17,11 @@ data1 = [{"errorMsg": "Out of index"}]
 result = list(map(lambda d: [(k, v) for k, v in d.items()], data1))
 
 # print(result)
+# print(result[0][0][0], result[0][0][1])
+print(list(map(lambda d: [(k, v) for k, v in d.items()], data1))[0][0][0], list(map(lambda d: [(k, v) for k, v in d.items()], data1))[0][0][1])
 
-for k, v in enumerate(result):
-    print(v[0][0], v[0][1])
+# for k, v in enumerate(result):
+#     print(v[0][0], v[0][1])
 
 create_list = lambda *elements: list(elements)
 
