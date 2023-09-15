@@ -1,6 +1,9 @@
+import asyncio
+
 from fileUtils import FileUtils
 from LogUtils import Log
 from sqlalchemy import String, create_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 
@@ -140,13 +143,19 @@ class MutilpleDatabaseOperation:
         self.log = Log(
             self.__class__.__name__, FileUtils.getConfigValue()["LOGPATH"]
         ).getlog()
-        self.engine = create_engine(
+        self.engine = create_async_engine(
             FileUtils.getConfigValue()["DATABASE_URI"],
             # "mysql+pymysql://python_user:s7ALSyFSwIKOZXdx@kids.zjbaosight.com:10036/bwms_ext?charset=utf8",
             echo=False,
         )
+        # self.engine = create_engine(
+        #     FileUtils.getConfigValue()["DATABASE_URI"],
+        #     # "mysql+pymysql://python_user:s7ALSyFSwIKOZXdx@kids.zjbaosight.com:10036/bwms_ext?charset=utf8",
+        #     echo=False,
+        # )
         self.Base.metadata.create_all(self.engine)
-        self.Session = sessionmaker(bind=self.engine)
+        self.Session = sessionmaker(bind=self.engine, class_=AsyncSession)
+        # self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
 
     def close(self):
@@ -266,7 +275,8 @@ class MutilpleDatabaseOperation:
             )
         )
 
-    def delete1(self, project_id, week_date):
+    async def delete1(self, project_id, week_date):
+        # async with self.session as session:
         self.session.query(self.DCYW0024).filter(
             self.DCYW0024.project_id == project_id
         ).filter(self.DCYW0024.week_date == week_date).delete()
@@ -279,13 +289,16 @@ class MutilpleDatabaseOperation:
         )
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
+async def main():
     obj = MutilpleDatabaseOperation()
-#     obj.write_to_db(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
-#     # obj.write_to_db(1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
-#     # obj.write_to_db(100,"FP23P0028",2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
-#     # obj.write_to_db1(11,0,1,2,3,4,5,6,7,8,9,10,11,12)
-#     # obj.write_to_db1(12,1,1,2,3,4,5,6,7,8,9,10,11,12)
-#     # obj.write_to_db1(13,1,1,2,3,4,5,6,7,8,9,10,11,12)
-# obj.delete("FP22P0072", "20230821")
+    #     obj.write_to_db(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+    #     # obj.write_to_db(1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+    #     # obj.write_to_db(100,"FP23P0028",2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+    #     # obj.write_to_db1(11,0,1,2,3,4,5,6,7,8,9,10,11,12)
+    #     # obj.write_to_db1(12,1,1,2,3,4,5,6,7,8,9,10,11,12)
+    #     # obj.write_to_db1(13,1,1,2,3,4,5,6,7,8,9,10,11,12)
+    await obj.delete("FP22P0072", "20230821")
+
+asyncio.run(main())
 #     # obj.delete1(0)
