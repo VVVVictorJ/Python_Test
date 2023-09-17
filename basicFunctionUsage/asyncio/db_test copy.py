@@ -12,6 +12,17 @@ mapper_registry = registry()
 Base = mapper_registry.generate_base()
 metadata = Base.metadata
 
+time_save = []
+
+def cost_time(func):
+    def fun(*args, **kwargs):
+        t = time.perf_counter()
+        result = func(*args, **kwargs)
+        time_save.append(time.perf_counter() - t)
+        pprint(f'func {func.__name__} cost time:{time.perf_counter() - t:.8f} s')
+        return result
+
+    return fun
 
 def randomValue(inputList: dict):
     result = []
@@ -108,7 +119,7 @@ class MutilpleDatabaseOperation:
 
     def __init__(self) -> None:
         self.__url = (
-            "mysql+pymysql://bwms:bwms_user@www.zjbaosight.com:3306/bwms?charset=utf8"
+            "mysql+pymysql://admin:zhj123456@127.0.0.1:3306/test?charset=utf8"
         )
         self.__engine = create_engine(self.__url)
 
@@ -116,6 +127,7 @@ class MutilpleDatabaseOperation:
         self.__engine.dispose()
 
     # @staticmethod
+    @cost_time
     def test(self, paralist: list):
         # async with async_egn.connect() as conn:
         #     result = await conn.(...)
@@ -166,6 +178,7 @@ class MutilpleDatabaseOperation:
 #     await task
 #     await obj.close()
 
+# @cost_time
 def synchronize_test():
     a = [
         {
@@ -193,7 +206,7 @@ def synchronize_test():
         }
     ]
     obj = MutilpleDatabaseOperation()
-    for i in range(1000):
+    for i in range(10000):
         obj.test(randomValue(a))
     obj.close()
 
@@ -216,6 +229,7 @@ end_time = time.perf_counter()
 
 print("总共耗时:{}".format(end_time - start_time))
 
+print("sync:",sum(time_save))
 # a = [
 #     {
 #         "unique_id": "1295227",

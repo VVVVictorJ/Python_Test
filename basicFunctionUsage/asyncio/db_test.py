@@ -13,20 +13,24 @@ mapper_registry = registry()
 Base = mapper_registry.generate_base()
 metadata = Base.metadata
 
+time_save = []
+
 
 def cost_time(func):
     def fun(*args, **kwargs):
         t = time.perf_counter()
         result = func(*args, **kwargs)
-        pprint(f'func {func.__name__} cost time:{time.perf_counter() - t:.8f} s')
+        pprint(f"func {func.__name__} cost time:{time.perf_counter() - t:.8f} s")
+        time_save.append(time.perf_counter() - t)
         return result
 
     return fun
 
-@cost_time
+
+# @cost_time
 def randomValue(inputList: dict):
     result = []
-    c = range(1000000)
+    c = range(10000000)
     # 固定的键
     fixed_keys = list(inputList[0].keys())
 
@@ -116,18 +120,20 @@ class MutilpleDatabaseOperation:
         # def __init__(self) -> None:
         #     url = "mysql+aiomysql://python_user:s7ALSyFSwIKOZXdx@kids.zjbaosight.com:10036/bwms_ext?charset=utf8"
         #     self.async_egn = create_async_engine(url)
+
     # @print_info
-    @cost_time
+    # @cost_time
     def __init__(self) -> None:
         self.__url = (
-            "mysql+aiomysql://bwms:bwms_user@www.zjbaosight.com:3306/bwms?charset=utf8"
+            "mysql+aiomysql://admin:zhj123456@127.0.0.1:3306/test?charset=utf8"
+            # "mysql+aiomysql://bwms:bwms_user@www.zjbaosight.com:3306/bwms?charset=utf8"
         )
         self.__async_egn = create_async_engine(
-            self.__url, pool_size=100, max_overflow=50, pool_timeout=100
+            self.__url, pool_size=50, max_overflow=40, pool_timeout=100
         )
 
     # @print_info
-    @cost_time
+    # @cost_time
     async def close(self):
         await self.__async_egn.dispose()
 
@@ -152,8 +158,7 @@ class MutilpleDatabaseOperation:
         # await self.__async_egn.dispose()
 
 
-
-@cost_time
+# @cost_time
 async def main():
     a = [
         {
@@ -182,7 +187,7 @@ async def main():
     ]
     obj = MutilpleDatabaseOperation()
     # task = asyncio.create_task(obj.test(a))
-    tasks = [asyncio.create_task(obj.test(randomValue(a))) for i in range(10)]
+    tasks = [asyncio.create_task(obj.test(randomValue(a))) for i in range(10000)]
     for task in tasks:
         await task
     await task
@@ -204,6 +209,8 @@ asyncio.run(main())
 end_time = time.perf_counter()
 
 print("总共耗时:{}".format(end_time - start_time))
+
+print("async:", sum(time_save))
 
 # a = [
 #     {
