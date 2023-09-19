@@ -28,6 +28,7 @@ class MutilpleDatabaseOperation:
         deploy_type: Mapped[str] = mapped_column(String(100))
         next_period: Mapped[str] = mapped_column(String(100))
         period_switch_status: Mapped[str] = mapped_column(String(100))
+        current_week_plan: Mapped[str] = mapped_column(String(100))
         current_week_status: Mapped[str] = mapped_column(String(1000))
         next_week_plan: Mapped[str] = mapped_column(String(1000))
         postscript: Mapped[str] = mapped_column(String(1000))
@@ -52,6 +53,7 @@ class MutilpleDatabaseOperation:
             deploy_type,
             next_period,
             period_switch_status,
+            current_week_plan,
             current_week_status,
             next_week_plan,
             postscript,
@@ -74,6 +76,7 @@ class MutilpleDatabaseOperation:
             self.deploy_type = deploy_type
             self.next_period = next_period
             self.period_switch_status = period_switch_status
+            self.current_week_plan = current_week_plan
             self.current_week_status = current_week_status
             self.next_week_plan = next_week_plan
             self.postscript = postscript
@@ -174,6 +177,7 @@ class MutilpleDatabaseOperation:
         deploy_type,
         next_period,
         period_switch_status,
+        current_week_plan,
         current_week_status,
         next_week_plan,
         postscript,
@@ -197,6 +201,7 @@ class MutilpleDatabaseOperation:
             deploy_type,
             next_period,
             period_switch_status,
+            current_week_plan,
             current_week_status,
             next_week_plan,
             postscript,
