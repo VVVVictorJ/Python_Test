@@ -287,9 +287,10 @@ class processModule:
                             sheet1_object.cell_value(4, 4),
                             sheet1_object.cell_value(4, 7),
                             sheet1_object.cell_value(4, 10),
-                            sheet1_object.cell_value(6, 0),
-                            sheet1_object.cell_value(6, 5),
-                            sheet1_object.cell(6, 11).value,
+                            sheet1_object.cell_value(6, 1),
+                            sheet1_object.cell_value(6, 4),
+                            sheet1_object.cell_value(6, 7),
+                            sheet1_object.cell_value(6, 10),
                         )
                     except Exception as e:
                         errorList.append(
