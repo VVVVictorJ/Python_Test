@@ -19,6 +19,7 @@ warnings.filterwarnings(action="once")
 年终奖金额为a, 年收入为b, 将二者合并计算, 
 作为综合所得, 使用综合所得的适用税率来计算年终奖所得税
 """
+# TODO 年终奖速算扣除数与综合所得速算扣除数不一致
 
 tax_rate_and_deduction = {
     "1": [0.03, 0],
