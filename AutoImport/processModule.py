@@ -173,6 +173,7 @@ class processModule:
                         # print(sheet1_object.cell(item, 10).ctype)
                         # # 部门处理意见
                         # print(sheet1_object.cell(item, 11).ctype)
+                        # print(sheet1_object.cell_value(6, 4))
                         if sheet1_object.cell(item, 0).value == "无":
                             filelist.append(filepath)
                             continue
