@@ -45,6 +45,7 @@ def g0(x):
         return 0.45 * (x - 60000) - 15160
 
 
+# 总收入
 a = 400000
 
 b = [
@@ -65,9 +66,7 @@ c = [
     [660000, 960000],
 ]
 
-if a > 960000:
-    b.append([960000, a])
-    c.append([960000, a])
+
 
 l = []
 ll = []
@@ -76,15 +75,20 @@ lll = []
 # 边界值点
 llll = []
 
-for i in b:
-    # print(i)
-    if a >= i[1]:
-        # print("a - i[1]:{}\ta - i[0]:{}t".format(a - i[1], a - i[0]))
-        l.append([a - i[1], a - i[0]])
-        ll.append((a - i[0], a - i[1]))
-        lll.append([i[0], i[1]])
-    else:
-        break
+def pre(x):
+    a= x
+    if a > 960000:
+        b.append([960000, a])
+        c.append([960000, a])
+    for i in b:
+        # print(i)
+        if a >= i[1]:
+            # print("a - i[1]:{}\ta - i[0]:{}t".format(a - i[1], a - i[0]))
+            l.append([a - i[1], a - i[0]])
+            ll.append((a - i[0], a - i[1]))
+            lll.append([i[0], i[1]])
+        else:
+            break
 
 # print(b)
 # print(l)
@@ -118,30 +122,43 @@ def divide(x, y, z):
             if z[1] >= y - i[0] >= z[0]:
                 llll.append((y - i[0], i[0]))
 
+
 # print(i[0], i[1])
 
 # print(i[0], i[1])
 # print([i[0], i[1]])
 
-# 边界值
-for k, v in enumerate(ll):
-    divide(l[k], a, lll[k])
-    llll.append(tuple(zip(b[k], v))[0])
-    llll.append(tuple(zip(b[k], v))[1])
 
+def k(u,ll):
+    pre(u)
+    # 边界值
+    for k, v in enumerate(ll):
+        divide(l[k], a, lll[k])
+        llll.append(tuple(zip(b[k], v))[0])
+        llll.append(tuple(zip(b[k], v))[1])
 
-# pprint(llll)
+    # pprint(llll)
 
-kk = {}.fromkeys(llll).keys()
-kk = list(kk)
+    kk = {}.fromkeys(llll).keys()
+    kk = list(kk)
 
-print(kk)
-# min, max = 0, 0
-for k, v in enumerate(kk):
-    # print("k:{}, v:{}".format(k, v))
-    if v[0] == 0:
-        continue
-    print(f0(v[0])+g0(v[1]))
+    # print(kk)
+    min, max = f0(kk[1][0]) + g0(kk[1][1]), f0(kk[1][0]) + g0(kk[1][1])
+
+    for k, v in enumerate(kk):
+        # print("k:{}, v:{}".format(k, v))
+        if v[0] == 0:
+            continue
+        if min >= f0(v[0]) + g0(v[1]):
+            min = f0(v[0]) + g0(v[1])
+        if max < f0(v[0]) + g0(v[1]):
+            max = f0(v[0]) + g0(v[1])
+        # print("min:{} max:{}".format(min, max))
+        print("k:{} 工资:{} 年终奖:{} 税:{}".format(k, v[0], v[1], f0(v[0]) + g0(v[1])))
+    print("min:{} max:{}".format(min, max))
+
 
 # print(f0(100000)+g0(300000))
 # 263670.0
+# k(1300000, ll)
+k(400000, ll)
