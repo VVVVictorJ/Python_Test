@@ -10,17 +10,17 @@ def divide_part(totalIncome, asumeYearIncome):
 incomeBoundary = [
     [0, 36000],
     [36000, 144000],
-    [144000, 300000],
-    [300000, 420000],
-    [420000, 660000],
-    [660000, 960000],
-    [960000],
+    [144001, 300000],
+    [300001, 420000],
+    [420001, 660000],
+    [660001, 960000],
+    [960001],
 ]
 
 enumList = []
 
 for i in range(len(incomeBoundary)):
-    if incomeBoundary[i][0] == 960000:
+    if incomeBoundary[i][0] == 960001:
         if divide_part(400000, incomeBoundary[i][0]) == -1:
             continue
     if type(divided_part := divide_part(400000, incomeBoundary[i][1])) == tuple:
